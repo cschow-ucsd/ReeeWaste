@@ -8,11 +8,11 @@
           <dependsOn>common_iosTest</dependsOn>
         </dependsOnModuleNames>
         <sourceSets>
-          <sourceSet>project.ucsd.reee_waste.common.iosTest</sourceSet>
-          <sourceSet>project.ucsd.reee_waste.common.iosArm64Main</sourceSet>
           <sourceSet>project.ucsd.reee_waste.common.commonMain</sourceSet>
-          <sourceSet>project.ucsd.reee_waste.common.commonTest</sourceSet>
           <sourceSet>project.ucsd.reee_waste.common.iosMain</sourceSet>
+          <sourceSet>project.ucsd.reee_waste.common.iosArm64Main</sourceSet>
+          <sourceSet>project.ucsd.reee_waste.common.commonTest</sourceSet>
+          <sourceSet>project.ucsd.reee_waste.common.iosTest</sourceSet>
         </sourceSets>
         <newMppModelJpsModuleKind>COMPILATION_AND_SOURCE_SET_HOLDER</newMppModelJpsModuleKind>
         <compilerSettings />

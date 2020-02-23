@@ -5,9 +5,9 @@
       <configuration version="3" platform="JavaScript " allPlatforms="JS []" useProjectSettings="false" isTestModule="true" externalProjectId=":common">
         <dependsOnModuleNames>common_commonTest</dependsOnModuleNames>
         <sourceSets>
+          <sourceSet>project.ucsd.reee_waste.common.commonTest</sourceSet>
           <sourceSet>project.ucsd.reee_waste.common.jsMain</sourceSet>
           <sourceSet>project.ucsd.reee_waste.common.commonMain</sourceSet>
-          <sourceSet>project.ucsd.reee_waste.common.commonTest</sourceSet>
         </sourceSets>
         <newMppModelJpsModuleKind>COMPILATION_AND_SOURCE_SET_HOLDER</newMppModelJpsModuleKind>
         <externalSystemTestTasks>
