@@ -1,12 +1,9 @@
-import project.ucsd.reee_waste.platformMessage
-import react.dom.h1
 import react.dom.render
+import root.root
 import kotlin.browser.document
 
 fun main() {
     render(document.getElementById("root")) {
-        h1 {
-            +platformMessage()
-        }
+        root()
     }
 }

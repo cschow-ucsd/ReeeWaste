@@ -7,7 +7,7 @@ repositories {
     jcenter()
     mavenCentral()
     maven(url = "https://dl.bintray.com/kotlin/kotlin-eap")
-    maven("https://kotlin.bintray.com/kotlin-js-wrappers/")
+    maven(url = "https://kotlin.bintray.com/kotlin-js-wrappers/")
 }
 kotlin {
     sourceSets["main"].dependencies {
@@ -20,6 +20,7 @@ kotlin {
         implementation(project(":common"))
     }
     sourceSets["test"].dependencies {
+        implementation(kotlin("test-js"))
     }
 }
 
