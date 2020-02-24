@@ -33,5 +33,6 @@ allprojects {
         maven(url = "https://dl.bintray.com/kotlin/ktor")
         maven(url = "https://dl.bintray.com/kodein-framework/Kodein-DI")
         maven(url = "https://dl.bintray.com/touchlabpublic/kotlin")
+        maven(url = "https://kotlin.bintray.com/ktor")
     }
 }

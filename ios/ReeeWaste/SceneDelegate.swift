@@ -8,6 +8,7 @@
 
 import UIKit
 import SwiftUI
+import common
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
@@ -41,6 +42,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func sceneDidBecomeActive(_ scene: UIScene) {
         // Called when the scene has moved from an inactive state to an active state.
         // Use this method to restart any tasks that were paused (or not yet started) when the scene was inactive.
+        let client = RwService(appId: "5AC99F5F-F948-44F9-A925-345BCF8DE90B", apiKey: "48CD2370-0D52-4FDE-9659-E1FA5AC8D015")
     }
 
     func sceneWillResignActive(_ scene: UIScene) {

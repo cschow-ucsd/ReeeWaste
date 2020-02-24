@@ -31,6 +31,7 @@ kotlin {
             dependencies {
                 implementation(kotlin("stdlib-common"))
                 implementation("io.ktor:ktor-client-core:$ktor_version")
+                implementation("io.ktor:ktor-client-json:$ktor_version")
             }
         }
         val commonTest by getting {
@@ -43,6 +44,7 @@ kotlin {
             dependencies {
                 implementation(kotlin("stdlib-jdk8"))
                 implementation("io.ktor:ktor-client-apache:$ktor_version")
+                implementation("io.ktor:ktor-client-json-jvm:$ktor_version")
             }
         }
         val jvmTest by getting {
@@ -55,6 +57,7 @@ kotlin {
             dependencies {
                 implementation(kotlin("stdlib-js"))
                 implementation("io.ktor:ktor-client-js:$ktor_version")
+                implementation("io.ktor:ktor-client-json-js:$ktor_version")
             }
         }
         val jsTest by getting {
@@ -65,6 +68,8 @@ kotlin {
         val iosMain by getting {
             dependencies {
                 implementation("io.ktor:ktor-client-ios:$ktor_version")
+                implementation("io.ktor:ktor-client-core-native:$ktor_version")
+                implementation("io.ktor:ktor-client-json-native:$ktor_version")
             }
         }
         val iosTest by getting {
