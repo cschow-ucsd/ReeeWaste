@@ -4,15 +4,15 @@
     <facet type="kotlin-language" name="Kotlin">
       <configuration version="3" platform="Native " allPlatforms="Native []" useProjectSettings="false" isTestModule="true" externalProjectId=":common">
         <dependsOnModuleNames>
-          <dependsOn>common_commonTest</dependsOn>
-          <dependsOn>common_iosTest</dependsOn>
+          <dependsOn>:common:commonTest</dependsOn>
+          <dependsOn>:common:iosTest</dependsOn>
         </dependsOnModuleNames>
         <sourceSets>
-          <sourceSet>project.ucsd.reee_waste.common.commonMain</sourceSet>
           <sourceSet>project.ucsd.reee_waste.common.iosMain</sourceSet>
           <sourceSet>project.ucsd.reee_waste.common.iosArm64Main</sourceSet>
-          <sourceSet>project.ucsd.reee_waste.common.commonTest</sourceSet>
           <sourceSet>project.ucsd.reee_waste.common.iosTest</sourceSet>
+          <sourceSet>project.ucsd.reee_waste.common.commonTest</sourceSet>
+          <sourceSet>project.ucsd.reee_waste.common.commonMain</sourceSet>
         </sourceSets>
         <newMppModelJpsModuleKind>COMPILATION_AND_SOURCE_SET_HOLDER</newMppModelJpsModuleKind>
         <compilerSettings />

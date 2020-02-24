@@ -1,9 +1,10 @@
 # Project exclude paths
 /.gradle/
-/build/
+**/build/
 /build/js/node_modules/karma/config.tpl.js
 /build/js/packages/ReeeWaste-common/kotlin/
 /build/js/packages/ReeeWaste-common-test/kotlin/
 /common/build/
 /common/build/classes/kotlin/jvm/main/
 /common/build/classes/kotlin/jvm/test/
+/local.properties
