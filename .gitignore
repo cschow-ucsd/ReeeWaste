@@ -8,3 +8,5 @@
 /common/build/classes/kotlin/jvm/main/
 /common/build/classes/kotlin/jvm/test/
 /local.properties
+
+*.iml
