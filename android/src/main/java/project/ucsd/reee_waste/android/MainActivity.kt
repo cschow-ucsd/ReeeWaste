@@ -1,15 +1,15 @@
 package project.ucsd.reee_waste.android
 
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.coroutines.*
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.plus
 import project.ucsd.reee_waste.platformMessage
-import project.ucsd.reee_waste.service.RwService
 
 class MainActivity : AppCompatActivity(){
-    private val TAG = "MainActivity"
     private val scope = MainScope() + Job()
 
     override fun onCreate(savedInstanceState: Bundle?) {
