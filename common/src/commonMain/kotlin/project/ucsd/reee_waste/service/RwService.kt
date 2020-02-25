@@ -6,6 +6,8 @@ import io.ktor.client.features.json.defaultSerializer
 import io.ktor.client.request.get
 import io.ktor.client.request.post
 import io.ktor.client.request.url
+import io.ktor.http.ContentType
+import io.ktor.http.contentType
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.async
 
@@ -29,9 +31,10 @@ class RwService(
     fun loginAsync(
             login: String,
             password: String
-    ): Deferred<LoginResponse> = client.async {
-        val response = client.post<LoginResponse> {
+    ): Deferred<BackendlessResponse> = client.async {
+        val response = client.post<BackendlessResponse> {
             url(route("/users/login"))
+            contentType(ContentType.Application.Json)
             body = """
                 {
                     "login": $login,
@@ -39,7 +42,8 @@ class RwService(
                 }
             """.trimIndent()
         }
-        userToken = response.userToken
+        if (response is BackendlessResponse.Login)
+            userToken = response.userToken
         return@async response
     }
 

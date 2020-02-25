@@ -7,8 +7,9 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.*
 import project.ucsd.reee_waste.platformMessage
 import project.ucsd.reee_waste.service.RwService
+import java.lang.Exception
 
-class MainActivity : AppCompatActivity(){
+class MainActivity : AppCompatActivity() {
     private val TAG = "MainActivity"
     private val scope = MainScope() + Job()
 
@@ -20,7 +21,7 @@ class MainActivity : AppCompatActivity(){
 
         val service = RwService("5AC99F5F-F948-44F9-A925-345BCF8DE90B", "138246C6-FA44-4BEE-BD10-EADC26888365")
         scope.launch {
-            val loginResponse = service.loginAsync("testuser", "testuser").await()
+            TODO("test login service")
         }
     }
 
