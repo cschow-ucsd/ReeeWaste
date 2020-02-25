@@ -3,6 +3,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     kotlin("multiplatform")
+    kotlin("plugin.serialization")
 }
 
 group = "project.ucsd.reee_waste"
@@ -32,6 +33,8 @@ kotlin {
                 implementation(kotlin("stdlib-common"))
                 implementation("io.ktor:ktor-client-core:$ktor_version")
                 implementation("io.ktor:ktor-client-json:$ktor_version")
+                implementation("io.ktor:ktor-client-serialization:$ktor_version")
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-common:1.3.3")
             }
         }
         val commonTest by getting {
@@ -45,6 +48,8 @@ kotlin {
                 implementation(kotlin("stdlib-jdk8"))
                 implementation("io.ktor:ktor-client-apache:$ktor_version")
                 implementation("io.ktor:ktor-client-json-jvm:$ktor_version")
+                implementation("io.ktor:ktor-client-serialization-jvm:$ktor_version")
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.3")
             }
         }
         val jvmTest by getting {
@@ -58,6 +63,10 @@ kotlin {
                 implementation(kotlin("stdlib-js"))
                 implementation("io.ktor:ktor-client-js:$ktor_version")
                 implementation("io.ktor:ktor-client-json-js:$ktor_version")
+                implementation("io.ktor:ktor-client-serialization-js:$ktor_version")
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-js:1.3.3")
+
+                api(npm("text-encoding"))
             }
         }
         val jsTest by getting {
@@ -70,6 +79,8 @@ kotlin {
                 implementation("io.ktor:ktor-client-ios:$ktor_version")
                 implementation("io.ktor:ktor-client-core-native:$ktor_version")
                 implementation("io.ktor:ktor-client-json-native:$ktor_version")
+                implementation("io.ktor:ktor-client-serialization-native:$ktor_version")
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-native:1.3.3")
             }
         }
         val iosTest by getting {

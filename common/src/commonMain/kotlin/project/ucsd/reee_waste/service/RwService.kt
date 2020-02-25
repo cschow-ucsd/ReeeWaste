@@ -4,18 +4,17 @@ import io.ktor.client.HttpClient
 import io.ktor.client.features.defaultRequest
 import io.ktor.client.features.json.JsonFeature
 import io.ktor.client.features.json.defaultSerializer
-import io.ktor.client.request.*
-import io.ktor.client.statement.HttpResponse
-import io.ktor.client.statement.request
-import io.ktor.client.statement.response
+import io.ktor.client.request.get
+import io.ktor.client.request.post
+import io.ktor.client.request.url
 import io.ktor.http.ContentType
 import io.ktor.http.contentType
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.async
 
 class RwService(
-        val appId: String,
-        val apiKey: String
+        private val appId: String,
+        private val apiKey: String
 ) {
     companion object {
         const val BASE_URL = "https://api.backendless.com"
@@ -26,19 +25,16 @@ class RwService(
         install(JsonFeature) {
             serializer = defaultSerializer()
         }
-        defaultRequest {
-            host = "$BASE_URL/$appId/$apiKey"
-            header("user-token", userToken)
-            contentType(ContentType.Application.Json)
-        }
     }
 
-    fun login(
+    private fun route(path: String) = "$BASE_URL/$appId/$apiKey$path"
+
+    fun loginAsync(
             login: String,
             password: String
     ): Deferred<LoginResponse> = client.async {
-        val response = client.post<RawLoginResponse> {
-            url("/users/login")
+        val response = client.post<LoginResponse> {
+            url(route("/users/login"))
             body = """
                 {
                     "login": $login,
@@ -46,20 +42,17 @@ class RwService(
                 }
             """.trimIndent()
         }
-        userToken = response.`user-token`
-        return@async LoginResponse(response.objectId, response.`user-token`)
+        userToken = response.userToken
+        return@async response
     }
 
-    fun validateUserToken(
+    fun validateUserTokenAsync(
             token: String
     ): Deferred<Boolean> = client.async {
-        val isValid = client.get<Boolean>("/users/isvalidusertoken/$token")
+        val isValid = client.get<Boolean> {
+            url(route("/users/isvalidusertoken/$token"))
+        }
         if (isValid) userToken = token
         return@async isValid
     }
 }
-
-private data class RawLoginResponse(
-        val objectId: String,
-        val `user-token`: String
-)

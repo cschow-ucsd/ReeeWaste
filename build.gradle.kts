@@ -18,6 +18,7 @@ buildscript {
 
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version")
         classpath("com.android.tools.build:gradle:3.5.3")
+        classpath("org.jetbrains.kotlin:kotlin-serialization:$kotlin_version")
     }
 }
 
