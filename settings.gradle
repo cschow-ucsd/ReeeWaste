@@ -2,4 +2,4 @@ rootProject.name = 'ReeeWaste'
 
 enableFeaturePreview("GRADLE_METADATA")
 
-include ':common', ':ios', ':android', 'web'
+include ':common', ':ios', ':android', ':web'

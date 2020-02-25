@@ -1,14 +1,11 @@
 package project.ucsd.reee_waste.service
 
 import io.ktor.client.HttpClient
-import io.ktor.client.features.defaultRequest
 import io.ktor.client.features.json.JsonFeature
 import io.ktor.client.features.json.defaultSerializer
 import io.ktor.client.request.get
 import io.ktor.client.request.post
 import io.ktor.client.request.url
-import io.ktor.http.ContentType
-import io.ktor.http.contentType
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.async
 
@@ -38,7 +35,7 @@ class RwService(
             body = """
                 {
                     "login": $login,
-                    "password": $password
+                    "password": $password,
                 }
             """.trimIndent()
         }

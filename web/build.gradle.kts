@@ -2,7 +2,6 @@ plugins {
     id("org.jetbrains.kotlin.js")
 }
 
-
 repositories {
     jcenter()
     mavenCentral()
