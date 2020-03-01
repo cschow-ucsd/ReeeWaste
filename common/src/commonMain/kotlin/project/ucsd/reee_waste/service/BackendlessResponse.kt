@@ -28,4 +28,26 @@ sealed class BackendlessResponse {
             val userToken: String,
             val userStatus: String
     ): BackendlessResponse()
+
+    @Serializable
+    data class GetItems(
+            val results: List<Item>
+    ): BackendlessResponse()
+
+    @Serializable
+    data class Item(
+            val objectID: String = "",
+            val seller: String,
+            val buyer: String?,
+            val price : Double,
+            val type : String,
+            val selling: Boolean,
+            val title: String,
+            val description: String
+    ): BackendlessResponse()
+
+    @Serializable
+    data class DeleteItem(
+            val deletionTime: Int
+    )
 }
