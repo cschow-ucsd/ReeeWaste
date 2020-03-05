@@ -6,12 +6,10 @@ import kotlinx.serialization.Serializable
 data class Item(
         val objectId: String = "",
         val seller: String,
-        val buyer: String?,
+        val buyer: String? = null,
         val price: Double,
         val type: String,
         val selling: Boolean,
         val title: String,
         val description: String
 )
-
-//typealias Item = SingleItemResponse

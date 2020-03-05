@@ -1,46 +1,53 @@
-package project.ucsd.reee_waste
+package project.ucsd.reee_waste.android
 
-import kotlinx.coroutines.Deferred
+import junit.framework.TestCase.assertNotNull
+import junit.framework.TestCase.assertTrue
 import kotlinx.coroutines.runBlocking
+import org.junit.After
+import org.junit.Before
+import org.junit.Test
 import project.ucsd.reee_waste.backendless.model.Item
 import project.ucsd.reee_waste.backendless.service.RwService
 import kotlin.random.Random
-import kotlin.test.*
+import org.junit.runner.RunWith
 
+@Suppress("EXPERIMENTAL_API_USAGE")
 class RwServiceTest {
-    val APP_ID: String = "5AC99F5F-F948-44F9-A925-345BCF8DE90B"
-    val REST_API_KEY: String = "138246C6-FA44-4BEE-BD10-EADC26888365"
     private var userToken: String? = null
 
     private lateinit var service: RwService
 
     private suspend fun retrieveToken(): String {
-        val deferred = service.loginAsync("cschow@ucsd.edu", "yeetBOI1337")
+        val deferred = service.loginAsync(
+                BuildConfig.BACKENDLESS_LOGIN, BuildConfig.BACKENDLESS_PASSWORD)
         val response = deferred.await()
         return response.userToken
     }
 
-    @BeforeTest
+    @Before
     fun setupService() {
-        service = RwService(APP_ID, REST_API_KEY)
+        service = RwService(
+                appId = BuildConfig.BACKENDLESS_APP_ID,
+                apiKey = BuildConfig.BACKENDLESS_API_KEY
+        )
     }
 
-    @AfterTest
+    @After
     fun clearService() {
         service.close()
     }
 
     @Test
     fun loginTest() = runBlocking<Unit> {
-        val deferred = service.loginAsync("cschow@ucsd.edu",
-                "yeetBOI1337")
+        val deferred = service.loginAsync(
+                BuildConfig.BACKENDLESS_LOGIN, BuildConfig.BACKENDLESS_PASSWORD)
         val response = deferred.await() //Waits for response
         println(response)
         assertNotNull(response)
     }
 
     @Test
-    fun createUserTest() = runBlocking<Unit>{
+    fun createUserTest() = runBlocking<Unit> {
         val deferred = service.createUserAsync(
                 "li.alan180@hotmail.com", "bruhbruh")
         val response = deferred.await() //Waits for response
@@ -49,7 +56,7 @@ class RwServiceTest {
     }
 
     @Test
-    fun loginAndValidUserTokenTest() = runBlocking<Unit>{
+    fun loginAndValidUserTokenTest() = runBlocking<Unit> {
         userToken = userToken ?: retrieveToken()
         val deferred = service.validateUserTokenAsync(userToken!!)
         val response = deferred.await()
@@ -57,7 +64,7 @@ class RwServiceTest {
     }
 
     @Test
-    fun postItemTest() = runBlocking<Unit>{
+    fun postItemTest() = runBlocking<Unit> {
         val item = Item("", "",
                 null, 50.01, "Computers", true, "Big Computer",
                 "An epic computer")
@@ -67,7 +74,7 @@ class RwServiceTest {
     }
 
     @Test
-    fun updateItemTest() = runBlocking<Unit>{
+    fun updateItemTest() = runBlocking<Unit> {
         val item = Item("", "", null, 3.14, "Smartphones",
                 true, "Nokia Phone", "A brick")
         val updateResponse = service.postItemAsync(item).await()
@@ -79,7 +86,7 @@ class RwServiceTest {
     }
 
     @Test
-    fun getDatabaseTest() = runBlocking<Unit>{
+    fun getDatabaseTest() = runBlocking<Unit> {
         val deferred = service.getItemsAsync(10, 0, null)
         val response = deferred.await()
         println(response)
@@ -87,8 +94,8 @@ class RwServiceTest {
     }
 
     @Test
-    fun getItemTest() = runBlocking<Unit>{
-        val item = Item("", "", null, 700.21, 
+    fun getItemTest() = runBlocking<Unit> {
+        val item = Item("", "", null, 700.21,
                 "Large Household Appliances", true,
                 "Smartfridge", "Working smartfridge, touchscreen cracked")
         val updateResponse = service.postItemAsync(item).await()
@@ -101,7 +108,7 @@ class RwServiceTest {
     }
 
     @Test
-    fun deleteItemTest() = runBlocking<Unit>{
+    fun deleteItemTest() = runBlocking<Unit> {
         val item: Item = Item("", "", null, 1337.0,
                 "Lighting", true, "Limited Edition Lightbulb",
                 "Limited edition lightbulb signed by Thomas Edison himself, no longer working")

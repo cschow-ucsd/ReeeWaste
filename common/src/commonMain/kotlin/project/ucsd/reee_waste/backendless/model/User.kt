@@ -15,7 +15,7 @@ data class User(
         val objectId: String,
         val ownerId: String,
         val socialAccount: String,
-        val updated: JsonObject,
+        val updated: Long? = null,
         @SerialName("user-token")
         val userToken: String,
         val userStatus: String

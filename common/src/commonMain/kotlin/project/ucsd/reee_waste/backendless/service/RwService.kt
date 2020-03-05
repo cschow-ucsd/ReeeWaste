@@ -3,21 +3,24 @@ package project.ucsd.reee_waste.backendless.service
 import io.ktor.client.HttpClient
 import io.ktor.client.call.receive
 import io.ktor.client.features.json.JsonFeature
-import io.ktor.client.features.json.defaultSerializer
+import io.ktor.client.features.json.serializer.KotlinxSerializer
 import io.ktor.client.request.*
 import io.ktor.client.statement.HttpResponse
-import io.ktor.http.ContentType
+import io.ktor.client.statement.readText
 import io.ktor.http.HttpStatusCode
-import io.ktor.http.contentType
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.async
+import kotlinx.serialization.ImplicitReflectionSerializer
 import kotlinx.serialization.UnstableDefault
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.Json.Companion.nonstrict
 import kotlinx.serialization.json.Json.Companion.stringify
+import kotlinx.serialization.parse
 import project.ucsd.reee_waste.backendless.model.Item
-import project.ucsd.reee_waste.backendless.model.User
 import project.ucsd.reee_waste.backendless.response.*
 
 @UnstableDefault
+@ImplicitReflectionSerializer
 class RwService(
         private val appId: String,
         private val apiKey: String
@@ -30,7 +33,7 @@ class RwService(
     var userToken: String? = null
     val client: HttpClient = HttpClient {
         install(JsonFeature) {
-            serializer = defaultSerializer()
+            serializer = KotlinxSerializer(nonstrict)
         }
     }
 
@@ -40,9 +43,11 @@ class RwService(
 
     private fun route(path: String) = "$BASE_URL/$appId/$apiKey$path"
 
-    private suspend inline fun <reified T> HttpResponse.errorAwareReceive(
+    private suspend inline fun <reified T: Any> HttpResponse.errorAwareReceive(
     ): T = if (status == HttpStatusCode.OK) {
-        receive<T>()
+        val text = readText().also { println("HttpResponse body: $it") }
+        Json.parse(text.trimIndent())
+//        receive<T>()
     } else {
         val errorResponse = receive<ErrorResponse>()
         throw BackendlessHttpException(errorResponse.message)
@@ -98,7 +103,6 @@ class RwService(
         val response = client.post<HttpResponse> {
             url(route("/data/Item"))
             body = stringify(Item.serializer(), item)
-            contentType(ContentType.Application.Json)
             header(USER_TOKEN, userToken)
         }
         return@async response.errorAwareReceive<SingleItemResponse>()
@@ -110,7 +114,6 @@ class RwService(
         val response = client.put<HttpResponse> {
             url(route("/data/Item/${item.objectId}"))
             body = stringify(Item.serializer(), item)
-            contentType(ContentType.Application.Json)
             header(USER_TOKEN, userToken)
         }
         return@async response.errorAwareReceive<SingleItemResponse>()
