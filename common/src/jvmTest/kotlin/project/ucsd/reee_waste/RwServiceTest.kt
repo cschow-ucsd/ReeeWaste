@@ -4,8 +4,8 @@ import io.ktor.client.statement.HttpResponse
 import io.ktor.client.statement.readText
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.runBlocking
-import project.ucsd.reee_waste.service.BackendlessResponse
-import project.ucsd.reee_waste.service.RwService
+import project.ucsd.reee_waste.backendless.service.BackendlessResponse
+import project.ucsd.reee_waste.backendless.service.RwService
 import kotlin.test.Test
 import kotlin.test.assertNotNull
 

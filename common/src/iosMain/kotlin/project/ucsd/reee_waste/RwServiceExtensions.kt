@@ -3,7 +3,7 @@ package project.ucsd.reee_waste
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
-import project.ucsd.reee_waste.service.RwService
+import project.ucsd.reee_waste.backendless.service.RwService
 
 fun <T> RwService.callback(
         deferred: Deferred<T>,
