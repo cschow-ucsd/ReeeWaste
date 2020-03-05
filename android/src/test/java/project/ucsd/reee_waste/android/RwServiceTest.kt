@@ -4,6 +4,7 @@ import junit.framework.TestCase.assertNotNull
 import junit.framework.TestCase.assertTrue
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.ImplicitReflectionSerializer
+import kotlinx.serialization.UnstableDefault
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
@@ -11,7 +12,7 @@ import project.ucsd.reee_waste.backendless.model.Item
 import project.ucsd.reee_waste.backendless.service.RwService
 import kotlin.random.Random
 
-@Suppress("EXPERIMENTAL_API_USAGE")
+@UnstableDefault
 @ImplicitReflectionSerializer
 class RwServiceTest {
     private var userToken: String? = null
@@ -39,7 +40,7 @@ class RwServiceTest {
     }
 
     @Test
-    fun loginTest() = runBlocking<Unit> {
+    fun loginTest(): Unit = runBlocking {
         val deferred = service.loginAsync(
                 BuildConfig.BACKENDLESS_LOGIN, BuildConfig.BACKENDLESS_PASSWORD)
         val response = deferred.await() //Waits for response
@@ -48,7 +49,7 @@ class RwServiceTest {
     }
 
     @Test
-    fun createUserTest() = runBlocking<Unit> {
+    fun createUserTest(): Unit = runBlocking {
         val deferred = service.createUserAsync(
                 "li.alan180@hotmail.com", "alan", "bruhbruh")
         val response = deferred.await() //Waits for response
@@ -57,7 +58,7 @@ class RwServiceTest {
     }
 
     @Test
-    fun loginAndValidUserTokenTest() = runBlocking<Unit> {
+    fun loginAndValidUserTokenTest(): Unit = runBlocking {
         userToken = userToken ?: retrieveToken()
         val deferred = service.validateUserTokenAsync(userToken!!)
         val response = deferred.await()
@@ -65,7 +66,7 @@ class RwServiceTest {
     }
 
     @Test
-    fun postItemTest() = runBlocking<Unit> {
+    fun postItemTest(): Unit = runBlocking {
         val item = Item("", "",
                 null, 50.01, "Computers", true, "Big Computer",
                 "An epic computer")
@@ -75,19 +76,19 @@ class RwServiceTest {
     }
 
     @Test
-    fun updateItemTest() = runBlocking<Unit> {
+    fun updateItemTest(): Unit = runBlocking {
         val item = Item("", "", null, 3.14, "Smartphones",
                 true, "Nokia Phone", "A brick")
         val updateResponse = service.postItemAsync(item).await()
 
-        val updatedItem = (updateResponse as Item).copy(price = Random.nextInt(100).toDouble())
+        val updatedItem = updateResponse.copy(price = Random.nextInt(100).toDouble())
         val deferred = service.updateItemAsync(updatedItem)
         val response = deferred.await()
         assertNotNull(response)
     }
 
     @Test
-    fun getDatabaseTest() = runBlocking<Unit> {
+    fun getDatabaseTest(): Unit = runBlocking {
         val deferred = service.getItemsAsync(10, 0)
         val response = deferred.await()
         println(response)
@@ -95,28 +96,26 @@ class RwServiceTest {
     }
 
     @Test
-    fun getItemTest() = runBlocking<Unit> {
+    fun getItemTest(): Unit = runBlocking {
         val item = Item("", "", null, 700.21,
                 "Large Household Appliances", true,
                 "Smartfridge", "Working smartfridge, touchscreen cracked")
         val updateResponse = service.postItemAsync(item).await()
 
-        val requestObject = updateResponse
-        val deferred = service.getItemAsync(requestObject.objectId)
+        val deferred = service.getItemAsync(updateResponse.objectId)
         val response = deferred.await()
         println(response)
         assertNotNull(response)
     }
 
     @Test
-    fun deleteItemTest() = runBlocking<Unit> {
-        val item: Item = Item("", "", null, 1337.0,
+    fun deleteItemTest(): Unit = runBlocking {
+        val item = Item("", "", null, 1337.0,
                 "Lighting", true, "Limited Edition Lightbulb",
                 "Limited edition lightbulb signed by Thomas Edison himself, no longer working")
         val updateResponse = service.postItemAsync(item).await()
 
-        val requestedObject = updateResponse
-        val deferred = service.deleteItemAsync(requestedObject.objectId)
+        val deferred = service.deleteItemAsync(updateResponse.objectId)
         val response = deferred.await()
         println(response)
         assertNotNull(response)
