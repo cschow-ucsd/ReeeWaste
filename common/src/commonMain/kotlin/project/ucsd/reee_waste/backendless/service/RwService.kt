@@ -51,7 +51,7 @@ class RwService(
     fun loginAsync(
             login: String,
             password: String
-    ): Deferred<LoginResponse> = client.async {
+    ): Deferred<UserResponse> = client.async {
         val response = client.post<HttpResponse> {
             url(route("/users/login"))
             body = """
@@ -62,14 +62,14 @@ class RwService(
             """.trimIndent()
         }
         return@async response
-                .errorAwareReceive<LoginResponse>()
+                .errorAwareReceive<UserResponse>()
                 .also { userToken = it.userToken }
     }
 
     fun createUserAsync(
             email: String,
             password: String
-    ): Deferred<RegisterUserResponse> = client.async {
+    ): Deferred<UserResponse> = client.async {
         val response = client.post<HttpResponse> {
             url(route("/users/register"))
             body = """
