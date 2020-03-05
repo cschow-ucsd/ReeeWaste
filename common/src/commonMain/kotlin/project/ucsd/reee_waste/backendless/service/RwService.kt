@@ -6,21 +6,17 @@ import io.ktor.client.features.json.JsonFeature
 import io.ktor.client.features.json.serializer.KotlinxSerializer
 import io.ktor.client.request.*
 import io.ktor.client.statement.HttpResponse
-import io.ktor.client.statement.readText
 import io.ktor.http.HttpStatusCode
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.async
-import kotlinx.serialization.ImplicitReflectionSerializer
 import kotlinx.serialization.UnstableDefault
-import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.Json.Companion.nonstrict
 import kotlinx.serialization.json.Json.Companion.stringify
-import kotlinx.serialization.parse
+import kotlinx.serialization.json.JsonConfiguration
 import project.ucsd.reee_waste.backendless.model.Item
 import project.ucsd.reee_waste.backendless.response.*
 
 @UnstableDefault
-@ImplicitReflectionSerializer
 class RwService(
         private val appId: String,
         private val apiKey: String
@@ -122,10 +118,10 @@ class RwService(
     fun getItemsAsync(
             pageSize: Int,
             offset: Int,
-            where: String?
+            where: String = ""
     ): Deferred<ItemsListResponse> = client.async {
         val response = client.get<HttpResponse> {
-            url(route("/services/rwservice/getitems2?pageSize=$pageSize&offset=$offset"))
+            url(route("/services/rwservice/getitems2?pageSize=$pageSize&offset=$offset&where=$where"))
             header(USER_TOKEN, userToken)
         }
         return@async response.errorAwareReceive<ItemsListResponse>()

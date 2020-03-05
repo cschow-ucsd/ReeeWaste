@@ -3,15 +3,16 @@ package project.ucsd.reee_waste.android
 import junit.framework.TestCase.assertNotNull
 import junit.framework.TestCase.assertTrue
 import kotlinx.coroutines.runBlocking
+import kotlinx.serialization.ImplicitReflectionSerializer
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import project.ucsd.reee_waste.backendless.model.Item
 import project.ucsd.reee_waste.backendless.service.RwService
 import kotlin.random.Random
-import org.junit.runner.RunWith
 
 @Suppress("EXPERIMENTAL_API_USAGE")
+@ImplicitReflectionSerializer
 class RwServiceTest {
     private var userToken: String? = null
 
@@ -87,7 +88,7 @@ class RwServiceTest {
 
     @Test
     fun getDatabaseTest() = runBlocking<Unit> {
-        val deferred = service.getItemsAsync(10, 0, null)
+        val deferred = service.getItemsAsync(10, 0)
         val response = deferred.await()
         println(response)
         assertNotNull(response)
