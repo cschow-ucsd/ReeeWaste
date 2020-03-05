@@ -1,18 +1,23 @@
-package project.ucsd.reee_waste.service
+package project.ucsd.reee_waste.backendless.service
 
 import io.ktor.client.HttpClient
+import io.ktor.client.call.receive
 import io.ktor.client.features.json.JsonFeature
 import io.ktor.client.features.json.defaultSerializer
 import io.ktor.client.request.*
-import io.ktor.client.request.forms.submitForm
 import io.ktor.client.statement.HttpResponse
 import io.ktor.http.ContentType
-import io.ktor.http.Parameters
+import io.ktor.http.HttpStatusCode
 import io.ktor.http.contentType
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.async
+import kotlinx.serialization.UnstableDefault
 import kotlinx.serialization.json.Json.Companion.stringify
+import project.ucsd.reee_waste.backendless.model.Item
+import project.ucsd.reee_waste.backendless.model.User
+import project.ucsd.reee_waste.backendless.response.*
 
+@UnstableDefault
 class RwService(
         private val appId: String,
         private val apiKey: String
@@ -22,7 +27,7 @@ class RwService(
         const val USER_TOKEN = "user-token"
     }
 
-    private var userToken: String? = null
+    var userToken: String? = null
     val client: HttpClient = HttpClient {
         install(JsonFeature) {
             serializer = defaultSerializer()
@@ -35,11 +40,19 @@ class RwService(
 
     private fun route(path: String) = "$BASE_URL/$appId/$apiKey$path"
 
+    private suspend inline fun <reified T> HttpResponse.errorAwareReceive(
+    ): T = if (status == HttpStatusCode.OK) {
+        receive<T>()
+    } else {
+        val errorResponse = receive<ErrorResponse>()
+        throw BackendlessHttpException(errorResponse.message)
+    }
+
     fun loginAsync(
             login: String,
             password: String
-    ): Deferred<BackendlessResponse> = client.async {
-        val response = client.post<BackendlessResponse> {
+    ): Deferred<LoginResponse> = client.async {
+        val response = client.post<HttpResponse> {
             url(route("/users/login"))
             body = """
                 {  
@@ -47,19 +60,18 @@ class RwService(
                     "password" : "$password"
                 }
             """.trimIndent()
-        }//FormDataContent(parametersOf)
-        if (response is BackendlessResponse.Login)
-            userToken = response.userToken
+        }
         return@async response
+                .errorAwareReceive<LoginResponse>()
+                .also { userToken = it.userToken }
     }
 
     fun createUserAsync(
             email: String,
             password: String
-    ): Deferred<BackendlessResponse> = client.async {
-        val response = client.post<BackendlessResponse> {
+    ): Deferred<RegisterUserResponse> = client.async {
+        val response = client.post<HttpResponse> {
             url(route("/users/register"))
-            contentType(ContentType.Application.Json)
             body = """
                 {
                     "email": $email,
@@ -67,73 +79,73 @@ class RwService(
                 }
             """.trimIndent()
         }
-        return@async response
+        return@async response.errorAwareReceive()
     }
 
     fun validateUserTokenAsync(
             token: String
     ): Deferred<Boolean> = client.async {
-        val isValid = client.get<Boolean> {
+        val response = client.get<HttpResponse> {
             url(route("/users/isvalidusertoken/$token"))
         }
-        if (isValid) userToken = token
-        return@async isValid
+        response.errorAwareReceive<Boolean>()
+                .also { if (it) userToken = token }
     }
 
     fun postItemAsync(
-            item: BackendlessResponse.Item
-    ): Deferred<BackendlessResponse> = client.async {
-        val response = client.post<BackendlessResponse> {
+            item: Item
+    ): Deferred<SingleItemResponse> = client.async {
+        val response = client.post<HttpResponse> {
             url(route("/data/Item"))
-            body = stringify(BackendlessResponse.Item.serializer(), item)
+            body = stringify(Item.serializer(), item)
             contentType(ContentType.Application.Json)
             header(USER_TOKEN, userToken)
         }
-        return@async response
+        return@async response.errorAwareReceive()
     }
 
     fun updateItemAsync(
-            item: BackendlessResponse.Item
-    ): Deferred<BackendlessResponse> = client.async {
-        val response = client.put<BackendlessResponse> {
+            item: Item
+    ): Deferred<SingleItemResponse> = client.async {
+        val response = client.put<HttpResponse> {
             url(route("/data/Item/${item.objectID}"))
-            body = stringify(BackendlessResponse.Item.serializer(), item)
+            body = stringify(Item.serializer(), item)
             contentType(ContentType.Application.Json)
             header(USER_TOKEN, userToken)
         }
-        return@async response
+        return@async response.errorAwareReceive()
     }
 
-    fun getDatabaseAsync(
+    fun getItemsAsync(
             pageSize: Int,
             offset: Int,
             where: String?
-    ): Deferred<BackendlessResponse> = client.async {
-        val response = client.get<BackendlessResponse> {
+    ): Deferred<ItemsListResponse> = client.async {
+        val response = client.get<HttpResponse> {
             url(route("/services/rwservice/getitems2?pageSize=$pageSize&offset=$offset"))
             header(USER_TOKEN, userToken)
         }
-        return@async response
+        return@async response.errorAwareReceive()
     }
 
     fun getItemAsync(
             objectId: String
-    ): Deferred<BackendlessResponse> = client.async {
-        val response = client.get<BackendlessResponse> {
+    ): Deferred<SingleItemResponse> = client.async {
+        val response = client.get<HttpResponse> {
             url(route("/data/Item/$objectId"))
             header(USER_TOKEN, userToken)
         }
-        return@async response
+        return@async response.errorAwareReceive()
     }
 
     fun deleteItemAsync(
             objectId: String
-    ): Deferred<BackendlessResponse> = client.async {
-        val response = client.delete<BackendlessResponse> {
+    ): Deferred<DeleteItemResponse> = client.async {
+        val response = client.delete<HttpResponse> {
             url(route("/data/Item/$objectId"))
             header(USER_TOKEN, userToken)
         }
-        return@async response
+        return@async response.errorAwareReceive()
     }
 
 }
