@@ -29,6 +29,10 @@ class RwService(
         }
     }
 
+    fun close() {
+        client.close()
+    }
+
     private fun route(path: String) = "$BASE_URL/$appId/$apiKey$path"
 
     fun loginAsync(
@@ -37,7 +41,6 @@ class RwService(
     ): Deferred<BackendlessResponse> = client.async {
         val response = client.post<BackendlessResponse> {
             url(route("/users/login"))
-            contentType(ContentType.Application.Json)
             body = """
                 {  
                     "login" : "$login",
