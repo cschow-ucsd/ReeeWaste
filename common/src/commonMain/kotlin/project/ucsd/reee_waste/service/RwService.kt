@@ -39,14 +39,31 @@ class RwService(
             url(route("/users/login"))
             contentType(ContentType.Application.Json)
             body = """
+                {  
+                    "login" : "$login",
+                    "password" : "$password"
+                }
+            """.trimIndent()
+        }//FormDataContent(parametersOf)
+        if (response is BackendlessResponse.Login)
+            userToken = response.userToken
+        return@async response
+    }
+
+    fun createUserAsync(
+            email: String,
+            password: String
+    ): Deferred<BackendlessResponse> = client.async {
+        val response = client.post<BackendlessResponse> {
+            url(route("/users/register"))
+            contentType(ContentType.Application.Json)
+            body = """
                 {
-                    "login": $login,
-                    "password": $password,
+                    "email": $email,
+                    "password": $password
                 }
             """.trimIndent()
         }
-        if (response is BackendlessResponse.Login)
-            userToken = response.userToken
         return@async response
     }
 
@@ -90,7 +107,7 @@ class RwService(
             where: String?
     ): Deferred<BackendlessResponse> = client.async {
         val response = client.get<BackendlessResponse> {
-            url(route("/services/rwservice/getitems2"))
+            url(route("/services/rwservice/getitems2?pageSize=$pageSize&offset=$offset"))
             header(USER_TOKEN, userToken)
         }
         return@async response
