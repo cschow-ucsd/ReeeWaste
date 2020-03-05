@@ -38,7 +38,7 @@ class RwService(
         client.close()
     }
 
-    private fun route(path: String) = "$BASE_URL/$appId/$apiKey$path"
+    fun route(path: String) = "$BASE_URL/$appId/$apiKey$path"
 
     private suspend inline fun <reified T : Any> HttpResponse.errorAwareReceive(
     ): T = if (status == HttpStatusCode.OK) {

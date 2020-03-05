@@ -1,5 +1,9 @@
 package project.ucsd.reee_waste.android
 
+import io.ktor.client.request.delete
+import io.ktor.client.request.header
+import io.ktor.client.request.url
+import io.ktor.client.statement.HttpResponse
 import junit.framework.TestCase.assertNotNull
 import junit.framework.TestCase.assertTrue
 import kotlinx.coroutines.runBlocking
@@ -52,9 +56,18 @@ class RwServiceTest {
     fun createUserTest(): Unit = runBlocking {
         val deferred = service.createUserAsync(
                 "li.alan180@hotmail.com", "alan", "bruhbruh")
-        val response = deferred.await() //Waits for response
-        println(response)
-        assertNotNull(response)
+        val userResponse = deferred.await() //Waits for response
+
+        println(userResponse)
+        assertNotNull(userResponse)
+
+        val deleteResponse = service.client.delete<HttpResponse> {
+            url(service.route("/data/Users/${userResponse.objectId}"))
+            header(RwService.USER_TOKEN, userToken)
+        }
+
+        println(deleteResponse)
+        assertNotNull(deleteResponse)
     }
 
     @Test
@@ -70,9 +83,14 @@ class RwServiceTest {
         val item = Item("", "",
                 null, 50.01, "Computers", true, "Big Computer",
                 "An epic computer")
-        val deferred = service.postItemAsync(item)
-        val response = deferred.await()
-        assertNotNull(response)
+        val postResponse = service.postItemAsync(item).await()
+
+        println(postResponse)
+        assertNotNull(postResponse)
+
+        val deleteResponse = service.deleteItemAsync(postResponse.objectId).await()
+
+        println()
     }
 
     @Test
