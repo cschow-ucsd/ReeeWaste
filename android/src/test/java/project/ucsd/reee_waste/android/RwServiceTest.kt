@@ -21,7 +21,7 @@ class RwServiceTest {
         val deferred = service.loginAsync(
                 BuildConfig.BACKENDLESS_LOGIN, BuildConfig.BACKENDLESS_PASSWORD)
         val response = deferred.await()
-        return response.userToken
+        return requireNotNull(response.userToken) { "User token must be null after login." }
     }
 
     @Before
@@ -49,7 +49,7 @@ class RwServiceTest {
     @Test
     fun createUserTest() = runBlocking<Unit> {
         val deferred = service.createUserAsync(
-                "li.alan180@hotmail.com", "bruhbruh")
+                "li.alan180@hotmail.com", "alan", "bruhbruh")
         val response = deferred.await() //Waits for response
         println(response)
         assertNotNull(response)
@@ -79,7 +79,7 @@ class RwServiceTest {
                 true, "Nokia Phone", "A brick")
         val updateResponse = service.postItemAsync(item).await()
 
-        val updatedItem = (updateResponse as Item).copy(price = Random.nextDouble(10.0))
+        val updatedItem = (updateResponse as Item).copy(price = Random.nextInt(100).toDouble())
         val deferred = service.updateItemAsync(updatedItem)
         val response = deferred.await()
         assertNotNull(response)

@@ -7,9 +7,7 @@ import io.ktor.client.features.json.serializer.KotlinxSerializer
 import io.ktor.client.request.*
 import io.ktor.client.statement.HttpResponse
 import io.ktor.client.statement.readText
-import io.ktor.http.ContentType
 import io.ktor.http.HttpStatusCode
-import io.ktor.http.contentType
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.async
 import kotlinx.serialization.ImplicitReflectionSerializer
@@ -17,7 +15,6 @@ import kotlinx.serialization.UnstableDefault
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.Json.Companion.nonstrict
 import kotlinx.serialization.json.Json.Companion.stringify
-import kotlinx.serialization.json.JsonConfiguration
 import kotlinx.serialization.parse
 import project.ucsd.reee_waste.backendless.model.Item
 import project.ucsd.reee_waste.backendless.response.*
@@ -35,6 +32,7 @@ class RwService(
 
     var userToken: String? = null
     val client: HttpClient = HttpClient {
+        expectSuccess = false
         install(JsonFeature) {
             serializer = KotlinxSerializer(nonstrict)
         }
@@ -46,11 +44,9 @@ class RwService(
 
     private fun route(path: String) = "$BASE_URL/$appId/$apiKey$path"
 
-    private suspend inline fun <reified T: Any> HttpResponse.errorAwareReceive(
+    private suspend inline fun <reified T : Any> HttpResponse.errorAwareReceive(
     ): T = if (status == HttpStatusCode.OK) {
-        val text = readText().also { println("HttpResponse body: $it") }
-        Json.nonstrict.parse(text.trimIndent())
-//        receive<T>()
+        receive()
     } else {
         val errorResponse = receive<ErrorResponse>()
         throw BackendlessHttpException(errorResponse.message)
@@ -69,21 +65,22 @@ class RwService(
                 }
             """.trimIndent()
         }
-        return@async response
-                .errorAwareReceive<UserResponse>()
+        return@async response.errorAwareReceive<UserResponse>()
                 .also { userToken = it.userToken }
     }
 
     fun createUserAsync(
             email: String,
+            name: String,
             password: String
     ): Deferred<UserResponse> = client.async {
         val response = client.post<HttpResponse> {
             url(route("/users/register"))
             body = """
                 {
-                    "email": $email,
-                    "password": $password
+                    "email": "$email",
+                    "name": "$name",
+                    "password": "$password"
                 }
             """.trimIndent()
         }

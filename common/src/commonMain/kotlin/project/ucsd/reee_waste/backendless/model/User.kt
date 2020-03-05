@@ -10,13 +10,11 @@ data class User(
         val blUserLocale: String,
         val created: Long,
         val email: String,
-        val lastLogin: Long,
+        val lastLogin: Long? = null,
         val name: String,
         val objectId: String,
-        val ownerId: String,
-        val socialAccount: String,
         val updated: Long? = null,
         @SerialName("user-token")
-        val userToken: String,
+        val userToken: String? = null,
         val userStatus: String
 )
