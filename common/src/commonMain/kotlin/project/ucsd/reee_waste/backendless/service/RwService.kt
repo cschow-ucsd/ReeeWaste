@@ -7,7 +7,9 @@ import io.ktor.client.features.json.serializer.KotlinxSerializer
 import io.ktor.client.request.*
 import io.ktor.client.statement.HttpResponse
 import io.ktor.client.statement.readText
+import io.ktor.http.ContentType
 import io.ktor.http.HttpStatusCode
+import io.ktor.http.contentType
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.async
 import kotlinx.serialization.ImplicitReflectionSerializer
@@ -15,6 +17,7 @@ import kotlinx.serialization.UnstableDefault
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.Json.Companion.nonstrict
 import kotlinx.serialization.json.Json.Companion.stringify
+import kotlinx.serialization.json.JsonConfiguration
 import kotlinx.serialization.parse
 import project.ucsd.reee_waste.backendless.model.Item
 import project.ucsd.reee_waste.backendless.response.*
@@ -46,7 +49,7 @@ class RwService(
     private suspend inline fun <reified T: Any> HttpResponse.errorAwareReceive(
     ): T = if (status == HttpStatusCode.OK) {
         val text = readText().also { println("HttpResponse body: $it") }
-        Json.parse(text.trimIndent())
+        Json.nonstrict.parse(text.trimIndent())
 //        receive<T>()
     } else {
         val errorResponse = receive<ErrorResponse>()
@@ -113,7 +116,7 @@ class RwService(
     ): Deferred<SingleItemResponse> = client.async {
         val response = client.put<HttpResponse> {
             url(route("/data/Item/${item.objectId}"))
-            body = stringify(Item.serializer(), item)
+            body = stringify(Item.serializer(), item).also(::println)
             header(USER_TOKEN, userToken)
         }
         return@async response.errorAwareReceive<SingleItemResponse>()

@@ -79,7 +79,7 @@ class RwServiceTest {
                 true, "Nokia Phone", "A brick")
         val updateResponse = service.postItemAsync(item).await()
 
-        val updatedItem = (updateResponse as Item).copy(price = Random.nextDouble(100.0))
+        val updatedItem = (updateResponse as Item).copy(price = Random.nextDouble(10.0))
         val deferred = service.updateItemAsync(updatedItem)
         val response = deferred.await()
         assertNotNull(response)
