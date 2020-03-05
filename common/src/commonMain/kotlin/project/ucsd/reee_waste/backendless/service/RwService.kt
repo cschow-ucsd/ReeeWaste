@@ -34,6 +34,10 @@ class RwService(
         }
     }
 
+    fun close() {
+        client.close()
+    }
+
     private fun route(path: String) = "$BASE_URL/$appId/$apiKey$path"
 
     private suspend inline fun <reified T> HttpResponse.errorAwareReceive(
@@ -75,7 +79,7 @@ class RwService(
                 }
             """.trimIndent()
         }
-        return@async response.errorAwareReceive()
+        return@async response.errorAwareReceive<UserResponse>()
     }
 
     fun validateUserTokenAsync(
@@ -97,19 +101,19 @@ class RwService(
             contentType(ContentType.Application.Json)
             header(USER_TOKEN, userToken)
         }
-        return@async response.errorAwareReceive()
+        return@async response.errorAwareReceive<SingleItemResponse>()
     }
 
     fun updateItemAsync(
             item: Item
     ): Deferred<SingleItemResponse> = client.async {
         val response = client.put<HttpResponse> {
-            url(route("/data/Item/${item.objectID}"))
+            url(route("/data/Item/${item.objectId}"))
             body = stringify(Item.serializer(), item)
             contentType(ContentType.Application.Json)
             header(USER_TOKEN, userToken)
         }
-        return@async response.errorAwareReceive()
+        return@async response.errorAwareReceive<SingleItemResponse>()
     }
 
     fun getItemsAsync(
@@ -121,7 +125,7 @@ class RwService(
             url(route("/services/rwservice/getitems2?pageSize=$pageSize&offset=$offset"))
             header(USER_TOKEN, userToken)
         }
-        return@async response.errorAwareReceive()
+        return@async response.errorAwareReceive<ItemsListResponse>()
     }
 
     fun getItemAsync(
@@ -131,7 +135,7 @@ class RwService(
             url(route("/data/Item/$objectId"))
             header(USER_TOKEN, userToken)
         }
-        return@async response.errorAwareReceive()
+        return@async response.errorAwareReceive<SingleItemResponse>()
     }
 
     fun deleteItemAsync(
@@ -141,7 +145,7 @@ class RwService(
             url(route("/data/Item/$objectId"))
             header(USER_TOKEN, userToken)
         }
-        return@async response.errorAwareReceive()
+        return@async response.errorAwareReceive<DeleteItemResponse>()
     }
 
 }

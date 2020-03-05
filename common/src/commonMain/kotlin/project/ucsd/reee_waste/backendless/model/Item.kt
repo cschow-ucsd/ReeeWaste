@@ -4,7 +4,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class Item(
-        val objectID: String = "",
+        val objectId: String = "",
         val seller: String,
         val buyer: String?,
         val price: Double,
