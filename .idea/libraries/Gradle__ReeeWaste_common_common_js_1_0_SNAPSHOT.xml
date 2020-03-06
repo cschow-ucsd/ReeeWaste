@@ -1,5 +1,5 @@
 <component name="libraryTable">
-  <library name="ReeeWaste.common.common-js-1.0-SNAPSHOT">
+  <library name="Gradle: ReeeWaste.common.common-js-1.0-SNAPSHOT">
     <CLASSES>
       <root url="jar://$PROJECT_DIR$/common/build/libs/common-js-1.0-SNAPSHOT.jar!/" />
     </CLASSES>

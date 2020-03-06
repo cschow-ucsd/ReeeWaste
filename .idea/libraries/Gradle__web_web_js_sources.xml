@@ -1,5 +1,5 @@
 <component name="libraryTable">
-  <library name="ReeeWaste.web.web-js-sources">
+  <library name="Gradle: web.web-js-sources">
     <CLASSES>
       <root url="jar://$PROJECT_DIR$/web/build/libs/web-js-sources.jar!/" />
     </CLASSES>
