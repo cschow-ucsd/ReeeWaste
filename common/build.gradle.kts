@@ -28,6 +28,7 @@ kotlin {
 
     sourceSets {
         val ktor_version: String by rootProject.extra
+        println(sourceSets.map { it.name })
 
         val commonMain by getting {
             dependencies {
