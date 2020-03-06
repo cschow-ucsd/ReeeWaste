@@ -79,33 +79,6 @@ class RwServiceTest {
     }
 
     @Test
-    fun postItemTest(): Unit = runBlocking {
-        val item = Item("", "",
-                null, 50.01, "Computers", true, "Big Computer",
-                "An epic computer")
-        val postResponse = service.postItemAsync(item).await()
-
-        println(postResponse)
-        assertNotNull(postResponse)
-
-        val deleteResponse = service.deleteItemAsync(postResponse.objectId).await()
-
-        println()
-    }
-
-    @Test
-    fun updateItemTest(): Unit = runBlocking {
-        val item = Item("", "", null, 3.14, "Smartphones",
-                true, "Nokia Phone", "A brick")
-        val updateResponse = service.postItemAsync(item).await()
-
-        val updatedItem = updateResponse.copy(price = Random.nextInt(100).toDouble())
-        val deferred = service.updateItemAsync(updatedItem)
-        val response = deferred.await()
-        assertNotNull(response)
-    }
-
-    @Test
     fun getDatabaseTest(): Unit = runBlocking {
         val deferred = service.getItemsAsync(10, 0)
         val response = deferred.await()
@@ -127,15 +100,19 @@ class RwServiceTest {
     }
 
     @Test
-    fun deleteItemTest(): Unit = runBlocking {
+    fun postUpdateDeleteItemTest(): Unit = runBlocking {
         val item = Item("", "", null, 1337.0,
                 "Lighting", true, "Limited Edition Lightbulb",
                 "Limited edition lightbulb signed by Thomas Edison himself, no longer working")
-        val updateResponse = service.postItemAsync(item).await()
+        val postResponse = service.postItemAsync(item).await()
+        assertNotNull(postResponse)
 
-        val deferred = service.deleteItemAsync(updateResponse.objectId)
-        val response = deferred.await()
-        println(response)
-        assertNotNull(response)
+        val updatedItem = postResponse.copy(price = Random.nextInt(100).toDouble())
+        val updateResponse = service.updateItemAsync(updatedItem).await()
+        assertNotNull(updateResponse)
+
+        val deleteResponse = service.deleteItemAsync(updateResponse.objectId).await()
+        println(deleteResponse)
+        assertNotNull(deleteResponse)
     }
 }
