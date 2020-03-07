@@ -131,4 +131,20 @@ class RwServiceTest {
         println(response)
         assertNotNull(response)
     }
+
+    @Test
+    fun buyItemTest(): Unit = runBlocking {
+        val deferred = service.loginAsync(
+                BuildConfig.BACKENDLESS_LOGIN, BuildConfig.BACKENDLESS_PASSWORD)
+        val response = deferred.await()
+
+        val item = Item("", "", null, 9999.99,
+                "Automatic dispensers", true, "Free Money Dispenser",
+                "Free money vending machine")
+        val postResponse = service.postItemAsync(item).await()
+        assertNotNull(postResponse)
+
+        val buyResponse = service.buyItemAsync(postResponse.objectId, response.objectId).await()
+        assertNotNull(buyResponse)
+    }
 }

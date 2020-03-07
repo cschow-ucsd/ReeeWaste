@@ -152,4 +152,39 @@ class RwService(
         return@async response.errorAwareReceive<DeleteItemResponse>()
     }
 
+    fun buyItemAsync(
+            objectId: String,
+            userId: String
+    ): Deferred<SingleItemResponse> = async {
+        val response = client.put<HttpResponse> {
+            url(route("/data/Item/$objectId"))
+            body = """
+                {
+                    "selling" : false
+                }
+            """.trimIndent()
+            header(USER_TOKEN, userToken)
+        }
+        client.post<HttpResponse> {
+            url(route("/data/Item/$objectId/buyer:Users:1"))
+            body = """
+                {
+                    "buyer" : $userId
+                }
+            """.trimIndent()
+            header(USER_TOKEN, userToken)
+        }
+        return@async response.errorAwareReceive<SingleItemResponse>()
+    }
+
+    fun retrieveUserAsync(
+            userToken: String
+    ): Deferred<UserResponse> = async {
+        val response = client.get<HttpResponse> {
+            url(route("/services/rwservice/retrieveUser"))
+            header(USER_TOKEN, userToken)
+        }
+        return@async response.errorAwareReceive<UserResponse>()
+    }
+
 }
