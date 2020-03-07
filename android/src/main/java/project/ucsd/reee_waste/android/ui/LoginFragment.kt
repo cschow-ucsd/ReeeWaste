@@ -50,6 +50,8 @@ class LoginFragment : Fragment() {
     private fun launchRegisterFragment() {
         parentFragmentManager.commit {
             addToBackStack(null)
+            setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right,
+                    android.R.anim.slide_in_left, android.R.anim.slide_out_right)
             replace(R.id.mainContainer, RegisterFragment())
         }
     }
