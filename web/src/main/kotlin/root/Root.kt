@@ -21,7 +21,7 @@ private val ROOT: FunctionalComponent<RProps> = functionalComponent {
     useEffectWithCleanup(emptyList()) { { mainScope.cancel() } }
 
     hashRouter {
-        h1 { +platformMessage() }
+        h1(classes = "what") { +platformMessage() }
         switch {
             route("/home", exact = true) { home() }
             route("/login", exact = true) { login() }

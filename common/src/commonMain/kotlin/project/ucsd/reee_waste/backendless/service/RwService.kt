@@ -7,10 +7,11 @@ import io.ktor.client.features.json.serializer.KotlinxSerializer
 import io.ktor.client.request.*
 import io.ktor.client.statement.HttpResponse
 import io.ktor.http.HttpStatusCode
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.async
-import kotlinx.coroutines.handleCoroutineException
-import kotlinx.coroutines.*
 import kotlinx.serialization.UnstableDefault
 import kotlinx.serialization.json.Json.Companion.nonstrict
 import kotlinx.serialization.json.Json.Companion.stringify
