@@ -13,8 +13,9 @@
               app:layout_constraintEnd_toEndOf="parent"
               app:layout_constraintBottom_toTopOf="@id/textInputLayout4" android:text="Register"
               android:textAppearance="@style/TextAppearance.AppCompat.Large" android:layout_marginStart="8dp"
-              android:layout_marginEnd="8dp" android:layout_marginTop="8dp" android:layout_marginBottom="8dp"
-              android:textSize="36sp"/>
+              android:layout_marginEnd="8dp" android:layout_marginTop="@dimen/title_top_margin" android:layout_marginBottom="8dp"
+              android:textSize="@dimen/page_title" android:textColor="@color/colorPrimary"
+              android:fontFamily="@font/berkshire_swash" android:textAlignment="center"/>
 
     <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
@@ -93,14 +94,16 @@
             app:layout_constraintEnd_toEndOf="parent" android:layout_marginStart="8dp" android:layout_marginEnd="8dp"
             android:layout_marginBottom="8dp"/>
     <Button
-            android:text="Register"
+            android:text="@string/register"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/buttonRegisterRegister"
             style="@style/Widget.AppCompat.Button.Colored"
+            android:textAllCaps="false"
+            android:textSize="@dimen/accent_button_text"
             app:layout_constraintTop_toBottomOf="@+id/spinnerRegisterType" app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" android:layout_marginStart="8dp" android:layout_marginEnd="8dp"
-            android:layout_marginTop="8dp"/>
+            android:layout_marginTop="8dp" android:fontFamily="@font/berkshire_swash"/>
     <ProgressBar
             style="?android:attr/progressBarStyle"
             android:layout_width="wrap_content"

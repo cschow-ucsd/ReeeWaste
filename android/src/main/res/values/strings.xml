@@ -6,4 +6,6 @@
     <string name="message_welcome">Welcome,</string>
     <string name="acc_buyer_seller">Buyer/Seller</string>
     <string name="acc_ewaste_center">E-waste Center</string>
+    <string name="register">Register</string>
+    <string name="login">Login</string>
 </resources>
