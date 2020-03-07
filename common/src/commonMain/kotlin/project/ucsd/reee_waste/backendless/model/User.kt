@@ -16,5 +16,7 @@ data class User(
         val updated: Long? = null,
         @SerialName("user-token")
         val userToken: String? = null,
-        val userStatus: String
+        val userStatus: String,
+        val zipcode: Int,
+        val ewastecenter: Boolean
 )

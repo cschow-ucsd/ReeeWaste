@@ -55,7 +55,8 @@ class RwServiceTest {
     @Test
     fun createUserTest(): Unit = runBlocking {
         val deferred = service.createUserAsync(
-                "li.alan180@hotmail.com", "alan", "bruhbruh")
+                "li.alan180@hotmail.com", "alan", "bruhbruh", 92092,
+                false)
         val userResponse = deferred.await() //Waits for response
 
         println(userResponse)

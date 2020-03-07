@@ -72,7 +72,9 @@ class RwService(
     fun createUserAsync(
             email: String,
             name: String,
-            password: String
+            password: String,
+            zipCode: Int,
+            isCenter: Boolean
     ): Deferred<UserResponse> = async {
         val response = client.post<HttpResponse> {
             url(route("/users/register"))
@@ -80,7 +82,9 @@ class RwService(
                 {
                     "email": "$email",
                     "name": "$name",
-                    "password": "$password"
+                    "password": "$password",
+                    "zipcode": $zipCode,
+                    "ewastecenter": $isCenter
                 }
             """.trimIndent()
         }
