@@ -115,4 +115,20 @@ class RwServiceTest {
         println(deleteResponse)
         assertNotNull(deleteResponse)
     }
+
+    @Test
+    fun failThenSucceedLoginTest(): Unit = runBlocking {
+        val deleteDeferred = service.loginAsync("Goku", "KAMEHAMEHA");
+        try {
+            val deleteResponse = deleteDeferred.await()
+        }
+        catch(e: Exception){
+            print(deleteDeferred.getCompletionExceptionOrNull())
+        }
+        val deferred = service.loginAsync(
+                BuildConfig.BACKENDLESS_LOGIN, BuildConfig.BACKENDLESS_PASSWORD)
+        val response = deferred.await() //Waits for response
+        println(response)
+        assertNotNull(response)
+    }
 }
