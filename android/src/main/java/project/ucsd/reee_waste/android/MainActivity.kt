@@ -2,25 +2,21 @@ package project.ucsd.reee_waste.android
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.cancel
-import kotlinx.coroutines.plus
-import project.ucsd.reee_waste.platformMessage
+import androidx.fragment.app.commit
+import kotlinx.serialization.UnstableDefault
+import project.ucsd.reee_waste.android.ui.LoadingFragment
 
-class MainActivity : AppCompatActivity(){
-    private val scope = MainScope() + Job()
+@UnstableDefault
+class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        textviewMainHello.text = platformMessage()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        scope.cancel()
+        if (savedInstanceState == null) {
+            supportFragmentManager.commit {
+                replace(R.id.mainContainer, LoadingFragment())
+            }
+        }
     }
 }

@@ -9,6 +9,7 @@ import io.ktor.client.statement.HttpResponse
 import io.ktor.http.HttpStatusCode
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.async
+import kotlinx.coroutines.handleCoroutineException
 import kotlinx.serialization.UnstableDefault
 import kotlinx.serialization.json.Json.Companion.nonstrict
 import kotlinx.serialization.json.Json.Companion.stringify
