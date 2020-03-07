@@ -1,3 +1,3 @@
 package project.ucsd.reee_waste
 
-actual fun getPlatform(): String = "JVM"
+actual fun getPlatform(): String = "Android"

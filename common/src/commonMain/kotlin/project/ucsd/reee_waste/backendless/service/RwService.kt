@@ -10,22 +10,27 @@ import io.ktor.http.HttpStatusCode
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.async
 import kotlinx.coroutines.handleCoroutineException
+import kotlinx.coroutines.*
 import kotlinx.serialization.UnstableDefault
 import kotlinx.serialization.json.Json.Companion.nonstrict
 import kotlinx.serialization.json.Json.Companion.stringify
-import kotlinx.serialization.json.JsonConfiguration
 import project.ucsd.reee_waste.backendless.model.Item
 import project.ucsd.reee_waste.backendless.response.*
+import kotlin.coroutines.CoroutineContext
 
 @UnstableDefault
 class RwService(
         private val appId: String,
         private val apiKey: String
-) {
+) : CoroutineScope {
     companion object {
         const val BASE_URL = "https://api.backendless.com"
         const val USER_TOKEN = "user-token"
     }
+
+    private val job: Job = SupervisorJob()
+    override val coroutineContext: CoroutineContext
+        get() = job
 
     var userToken: String? = null
     val client: HttpClient = HttpClient {
@@ -36,6 +41,7 @@ class RwService(
     }
 
     fun close() {
+        job.cancel()
         client.close()
     }
 
@@ -52,11 +58,11 @@ class RwService(
     fun loginAsync(
             login: String,
             password: String
-    ): Deferred<UserResponse> = client.async {
+    ): Deferred<UserResponse> = async {
         val response = client.post<HttpResponse> {
             url(route("/users/login"))
             body = """
-                {  
+                {
                     "login" : "$login",
                     "password" : "$password"
                 }
@@ -69,15 +75,19 @@ class RwService(
     fun createUserAsync(
             email: String,
             name: String,
-            password: String
-    ): Deferred<UserResponse> = client.async {
+            password: String,
+            zipCode: Int,
+            isCenter: Boolean
+    ): Deferred<UserResponse> = async {
         val response = client.post<HttpResponse> {
             url(route("/users/register"))
             body = """
                 {
                     "email": "$email",
                     "name": "$name",
-                    "password": "$password"
+                    "password": "$password",
+                    "zipcode": $zipCode,
+                    "ewastecenter": $isCenter
                 }
             """.trimIndent()
         }
@@ -86,7 +96,7 @@ class RwService(
 
     fun validateUserTokenAsync(
             token: String
-    ): Deferred<Boolean> = client.async {
+    ): Deferred<Boolean> = async {
         val response = client.get<HttpResponse> {
             url(route("/users/isvalidusertoken/$token"))
         }
@@ -96,7 +106,7 @@ class RwService(
 
     fun postItemAsync(
             item: Item
-    ): Deferred<SingleItemResponse> = client.async {
+    ): Deferred<SingleItemResponse> = async {
         val response = client.post<HttpResponse> {
             url(route("/data/Item"))
             body = stringify(Item.serializer(), item)
@@ -107,7 +117,7 @@ class RwService(
 
     fun updateItemAsync(
             item: Item
-    ): Deferred<SingleItemResponse> = client.async {
+    ): Deferred<SingleItemResponse> = async {
         val response = client.put<HttpResponse> {
             url(route("/data/Item/${item.objectId}"))
             body = stringify(Item.serializer(), item).also(::println)
@@ -120,7 +130,7 @@ class RwService(
             pageSize: Int,
             offset: Int,
             where: String = ""
-    ): Deferred<ItemsListResponse> = client.async {
+    ): Deferred<ItemsListResponse> = async {
         val query = "pageSize=$pageSize&offset=$offset&where=$where"
         val response = client.get<HttpResponse> {
             url(route("/services/rwservice/getitems2?$query"))
@@ -131,7 +141,7 @@ class RwService(
 
     fun getItemAsync(
             objectId: String
-    ): Deferred<SingleItemResponse> = client.async {
+    ): Deferred<SingleItemResponse> = async {
         val response = client.get<HttpResponse> {
             url(route("/data/Item/$objectId"))
             header(USER_TOKEN, userToken)
@@ -141,12 +151,47 @@ class RwService(
 
     fun deleteItemAsync(
             objectId: String
-    ): Deferred<DeleteItemResponse> = client.async {
+    ): Deferred<DeleteItemResponse> = async {
         val response = client.delete<HttpResponse> {
             url(route("/data/Item/$objectId"))
             header(USER_TOKEN, userToken)
         }
         return@async response.errorAwareReceive<DeleteItemResponse>()
+    }
+
+    fun buyItemAsync(
+            objectId: String,
+            userId: String
+    ): Deferred<SingleItemResponse> = async {
+        val response = client.put<HttpResponse> {
+            url(route("/data/Item/$objectId"))
+            body = """
+                {
+                    "selling" : false
+                }
+            """.trimIndent()
+            header(USER_TOKEN, userToken)
+        }
+        client.post<HttpResponse> {
+            url(route("/data/Item/$objectId/buyer:Users:1"))
+            body = """
+                {
+                    "buyer" : $userId
+                }
+            """.trimIndent()
+            header(USER_TOKEN, userToken)
+        }
+        return@async response.errorAwareReceive<SingleItemResponse>()
+    }
+
+    fun retrieveUserAsync(
+            userToken: String
+    ): Deferred<UserResponse> = async {
+        val response = client.get<HttpResponse> {
+            url(route("/services/rwservice/retrieveUser"))
+            header(USER_TOKEN, userToken)
+        }
+        return@async response.errorAwareReceive<UserResponse>()
     }
 
 }

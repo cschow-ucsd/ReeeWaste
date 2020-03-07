@@ -55,7 +55,8 @@ class RwServiceTest {
     @Test
     fun createUserTest(): Unit = runBlocking {
         val deferred = service.createUserAsync(
-                "li.alan180@hotmail.com", "alan", "bruhbruh")
+                "li.alan180@hotmail.com", "alan", "bruhbruh", 92092,
+                false)
         val userResponse = deferred.await() //Waits for response
 
         println(userResponse)
@@ -114,5 +115,37 @@ class RwServiceTest {
         val deleteResponse = service.deleteItemAsync(updateResponse.objectId).await()
         println(deleteResponse)
         assertNotNull(deleteResponse)
+    }
+
+    @Test
+    fun failThenSucceedLoginTest(): Unit = runBlocking {
+        val deleteDeferred = service.loginAsync("Goku", "KAMEHAMEHA");
+        try {
+            val deleteResponse = deleteDeferred.await()
+        }
+        catch(e: Exception){
+            print(deleteDeferred.getCompletionExceptionOrNull())
+        }
+        val deferred = service.loginAsync(
+                BuildConfig.BACKENDLESS_LOGIN, BuildConfig.BACKENDLESS_PASSWORD)
+        val response = deferred.await() //Waits for response
+        println(response)
+        assertNotNull(response)
+    }
+
+    @Test
+    fun buyItemTest(): Unit = runBlocking {
+        val deferred = service.loginAsync(
+                BuildConfig.BACKENDLESS_LOGIN, BuildConfig.BACKENDLESS_PASSWORD)
+        val response = deferred.await()
+
+        val item = Item("", "", null, 9999.99,
+                "Automatic dispensers", true, "Free Money Dispenser",
+                "Free money vending machine")
+        val postResponse = service.postItemAsync(item).await()
+        assertNotNull(postResponse)
+
+        val buyResponse = service.buyItemAsync(postResponse.objectId, response.objectId).await()
+        assertNotNull(buyResponse)
     }
 }
