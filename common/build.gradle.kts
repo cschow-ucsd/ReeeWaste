@@ -4,13 +4,14 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 plugins {
     kotlin("multiplatform")
     kotlin("plugin.serialization")
+    id( "com.android.library")
 }
 
 group = "project.ucsd.reee_waste"
 version = "1.0-SNAPSHOT"
 
 kotlin {
-    jvm()
+    android()
     js {
         browser {
         }
@@ -27,6 +28,7 @@ kotlin {
 
     sourceSets {
         val ktor_version: String by rootProject.extra
+        println(sourceSets.map { it.name })
 
         val commonMain by getting {
             dependencies {
@@ -43,16 +45,16 @@ kotlin {
                 implementation(kotlin("test-annotations-common"))
             }
         }
-        val jvmMain by getting {
+        val androidMain by getting {
             dependencies {
                 implementation(kotlin("stdlib-jdk8"))
                 implementation("io.ktor:ktor-client-apache:$ktor_version")
                 implementation("io.ktor:ktor-client-json-jvm:$ktor_version")
                 implementation("io.ktor:ktor-client-serialization-jvm:$ktor_version")
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.3")
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.3")
             }
         }
-        val jvmTest by getting {
+        val androidTest by getting {
             dependencies {
                 implementation(kotlin("test"))
                 implementation(kotlin("test-junit"))
@@ -84,6 +86,19 @@ kotlin {
             }
         }
         val iosTest by getting {
+        }
+    }
+}
+
+android {
+    compileSdkVersion(29)
+    defaultConfig {
+        minSdkVersion(21)
+    }
+    buildTypes {
+        getByName("release") {
+            isMinifyEnabled = true
+            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
     }
 }
