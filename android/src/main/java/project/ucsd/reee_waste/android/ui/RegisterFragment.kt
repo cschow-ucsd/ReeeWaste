@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import kotlinx.android.synthetic.main.fragment_register.*
@@ -31,7 +32,6 @@ class RegisterFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_register, container, false)
     }
 
@@ -41,6 +41,11 @@ class RegisterFragment : Fragment() {
         buttonRegisterRegister.setOnClickListener {
             registerAsync()
         }
+
+        val spinnerAdapter = ArrayAdapter<String>(
+                context!!, android.R.layout.simple_spinner_dropdown_item,
+                arrayOf(getString(R.string.acc_buyer_seller), getString(R.string.acc_ewaste_center)))
+        spinnerRegisterType.adapter = spinnerAdapter
     }
 
     private fun registerAsync() = scope.launch {
@@ -51,7 +56,9 @@ class RegisterFragment : Fragment() {
             rwService.createUserAsync(
                     email = edittextRegisterEmail.text.toString(),
                     name = edittextRegisterName.text.toString(),
-                    password = edittextRegisterPassword.text.toString()
+                    password = edittextRegisterPassword.text.toString(),
+                    zipCode = edittextRegisterZipcode.text.toString().toIntOrNull() ?: 0,
+                    isCenter = spinnerRegisterType.selectedItem == getString(R.string.acc_ewaste_center)
             ).await()
         } catch (e: BackendlessHttpException) {
             progressRegisterLoading.visibility = View.INVISIBLE

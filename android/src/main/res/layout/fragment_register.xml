@@ -5,10 +5,21 @@
                                                    android:layout_width="match_parent"
                                                    android:layout_height="match_parent"
                                                    tools:context=".ui.RegisterFragment">
+
+    <TextView android:layout_width="0dp" android:layout_height="wrap_content"
+              android:id="@+id/textviewRegisterTitle"
+              app:layout_constraintTop_toTopOf="parent"
+              app:layout_constraintStart_toStartOf="parent"
+              app:layout_constraintEnd_toEndOf="parent"
+              app:layout_constraintBottom_toTopOf="@id/textInputLayout4" android:text="Register"
+              android:textAppearance="@style/TextAppearance.AppCompat.Large" android:layout_marginStart="8dp"
+              android:layout_marginEnd="8dp" android:layout_marginTop="8dp" android:layout_marginBottom="8dp"
+              android:textSize="36sp"/>
+
     <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textviewRegisterTitle"
             android:id="@+id/textInputLayout4" app:layout_constraintBottom_toTopOf="@+id/textInputLayout3"
             app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="8dp"
             app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp" android:layout_marginTop="8dp"
@@ -45,6 +56,7 @@
         <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:inputType="textPassword"
                 android:hint="Password" android:id="@+id/edittextRegisterPassword"/>
     </com.google.android.material.textfield.TextInputLayout>
     <com.google.android.material.textfield.TextInputLayout
@@ -59,6 +71,7 @@
         <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:inputType="number"
                 android:hint="Zip Code" android:id="@+id/edittextRegisterZipcode"/>
     </com.google.android.material.textfield.TextInputLayout>
     <TextView
@@ -75,7 +88,8 @@
             android:layout_height="wrap_content"
             android:id="@+id/spinnerRegisterType"
             app:layout_constraintTop_toBottomOf="@+id/textView"
-            app:layout_constraintBottom_toTopOf="@+id/buttonRegisterRegister" app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/buttonRegisterRegister"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" android:layout_marginStart="8dp" android:layout_marginEnd="8dp"
             android:layout_marginBottom="8dp"/>
     <Button

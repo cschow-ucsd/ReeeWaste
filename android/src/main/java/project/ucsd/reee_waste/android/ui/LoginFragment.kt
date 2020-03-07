@@ -59,7 +59,6 @@ class LoginFragment : Fragment() {
         buttonLoginLogin.visibility = View.INVISIBLE
 
         val loginResponse = try {
-            Log.d("LoginFragment", "loginAsync()")
             rwService.loginAsync(
                     login = edittextLoginId.text.toString(),
                     password = edittextLoginPassword.text.toString()
