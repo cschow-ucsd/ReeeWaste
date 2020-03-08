@@ -51,11 +51,12 @@ class PostItemActivity : AppCompatActivity() {
         buttonPostPost.visibility = View.INVISIBLE
 
         val item = try {
-            Item("", "", null,
+            val user = (application as RwApplication).currentUser!!
+            Item("", user.objectId, null,
                     edittextPostPrice.text.toString().toDouble(),
                     spinnerPostType.selectedItem.toString(),
                     true, edittextPostName.text.toString(),
-                    edittextPostDescription.toString()
+                    edittextPostDescription.text.toString()
             )
         } catch (e: Exception) {
             Toast.makeText(this@PostItemActivity, R.string.invalid_input, Toast.LENGTH_SHORT).show()

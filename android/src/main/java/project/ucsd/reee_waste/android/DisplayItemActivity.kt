@@ -41,10 +41,10 @@ class DisplayItemActivity : AppCompatActivity() {
 
 
         val canPurchase = intent.getBooleanExtra(CAN_PURCHASE, false)
-        if (!canPurchase) {
-            buttonDisplayAddCart.visibility = View.GONE
-            buttonDisplayPurchase.visibility = View.GONE
-        } else {
+        val user = (application as RwApplication).currentUser!!
+        if (canPurchase) {
+            buttonDisplayAddCart.visibility = View.VISIBLE
+            buttonDisplayPurchase.visibility = View.VISIBLE
             buttonDisplayAddCart.setOnClickListener {
                 Toast.makeText(this, "Add to Cart coming soon!", Toast.LENGTH_SHORT).show()
             }
@@ -83,12 +83,6 @@ class DisplayItemActivity : AppCompatActivity() {
         textviewDisplayPrice.text = "${getString(R.string.currency)}${item.price}"
         textviewDisplayType.text = item.type
         textviewDisplayDescription.text = item.description
-
-        val user = (application as RwApplication).currentUser!!
-        if (item.ownerId == user.objectId) {
-            buttonDisplayAddCart.visibility = View.GONE
-            buttonDisplayPurchase.visibility = View.GONE
-        }
     }
 
     override fun onDestroy() {

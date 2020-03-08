@@ -20,6 +20,7 @@ import kotlinx.serialization.UnstableDefault
 import project.ucsd.reee_waste.android.R
 import project.ucsd.reee_waste.android.RwServiceViewModel
 import project.ucsd.reee_waste.android.DisplayItemActivity
+import project.ucsd.reee_waste.android.RwApplication
 import project.ucsd.reee_waste.android.ui.rwErrorToast
 import project.ucsd.reee_waste.backendless.model.Item
 import project.ucsd.reee_waste.backendless.service.RwService
@@ -46,11 +47,14 @@ class DashboardFragment : Fragment(), SearchView.OnQueryTextListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val user = (activity?.application as RwApplication).currentUser!!
+
         adapter = ItemsAdapter(items, false, View.OnClickListener { v ->
             val position = rvDashItems.getChildLayoutPosition(v)
             val intent = Intent(activity, DisplayItemActivity::class.java)
             intent.putExtra(DisplayItemActivity.OBJECT_ID, items[position].objectId)
-            intent.putExtra(DisplayItemActivity.CAN_PURCHASE, true)
+            intent.putExtra(DisplayItemActivity.CAN_PURCHASE,
+                    user.objectId != items[position].ownerId)
             startActivityForResult(intent, DisplayItemActivity.REQUEST_CODE)
         })
         rvDashItems.adapter = adapter
