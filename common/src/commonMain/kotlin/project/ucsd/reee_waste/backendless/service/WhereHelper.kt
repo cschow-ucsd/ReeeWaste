@@ -12,9 +12,10 @@ class WhereHelper(
             title: String = "",
             description: String = "",
             type: String = "",
-            zipcode: String = ""
+            zipcode: String = "",
+            ownerId: String = ""
     ): String {
         return "title like '%$title%' and description like '%$description%' and type like " +
-                "'%$type%'"
+                "'%$type%' and ownerId like '%$ownerId%'"
     }
 }
