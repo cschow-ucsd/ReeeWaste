@@ -14,6 +14,7 @@ import org.junit.Before
 import org.junit.Test
 import project.ucsd.reee_waste.backendless.model.Item
 import project.ucsd.reee_waste.backendless.service.RwService
+import project.ucsd.reee_waste.backendless.service.WhereHelper
 import kotlin.random.Random
 
 @UnstableDefault
@@ -148,4 +149,5 @@ class RwServiceTest {
         val buyResponse = service.buyItemAsync(postResponse.objectId, response.objectId).await()
         assertNotNull(buyResponse)
     }
+
 }

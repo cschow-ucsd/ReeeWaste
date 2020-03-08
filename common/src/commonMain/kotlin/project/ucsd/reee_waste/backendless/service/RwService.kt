@@ -5,8 +5,15 @@ import io.ktor.client.call.receive
 import io.ktor.client.features.json.JsonFeature
 import io.ktor.client.features.json.serializer.KotlinxSerializer
 import io.ktor.client.request.*
+import io.ktor.client.request.forms.MultiPartFormDataContent
+import io.ktor.client.request.forms.formData
 import io.ktor.client.statement.HttpResponse
+import io.ktor.http.ContentType
+import io.ktor.http.Headers
+import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpStatusCode
+import io.ktor.utils.io.core.buildPacket
+import io.ktor.utils.io.core.writeFully
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Job
@@ -193,6 +200,34 @@ class RwService(
             header(USER_TOKEN, userToken)
         }
         return@async response.errorAwareReceive<UserResponse>()
+    }
+
+    fun postPictureAsync(
+            // uploadFiles: Map<String, File>,
+            path: String,
+            folder: String,
+            filename: String
+    ): Deferred<HttpResponse> = async {
+        val response = client.post<HttpResponse> {
+            url(route("/files/$folder/$filename"))
+            /*body = MultiPartFormDataContent(
+                    formData {
+                        uploadFiles.entries.forEach {
+                            this.appendInput(
+                                    key = it.key,
+                                    headers = Headers.build {
+                                        append(HttpHeaders.ContentDisposition,
+                                                "filename=${it.value.name}")
+                                    },
+                                    size = it.value.length()
+                            ) { buildPacket { writeFully(it.value.readBytes()) } }
+                        }
+                    }
+                    )
+                    */
+           // body = ContentType.URIFileContent(path)
+        }
+        return@async response.errorAwareReceive<HttpResponse>()
     }
 
 }

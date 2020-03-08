@@ -9,10 +9,10 @@ class WhereHelper(
 ){
 
     fun search(
-            title: String,
-            description: String,
-            type: String,
-            zipcode: String
+            title: String = "",
+            description: String = "",
+            type: String = "",
+            zipcode: String = ""
     ): String {
         return Parameters.build {
             append("title", title)
