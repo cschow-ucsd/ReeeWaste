@@ -149,4 +149,13 @@ class RwServiceTest {
         val buyResponse = service.buyItemAsync(postResponse.objectId, response.objectId).await()
         assertNotNull(buyResponse)
     }
+
+    @Test
+    fun searchTest(): Unit = runBlocking {
+        val where = WhereHelper().search("Dispenser")
+
+        val response = service.searchItemsAsync(10, 0, where).await()
+        assertNotNull(response)
+    }
+
 }

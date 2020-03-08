@@ -8,10 +8,7 @@ import io.ktor.client.request.*
 import io.ktor.client.request.forms.MultiPartFormDataContent
 import io.ktor.client.request.forms.formData
 import io.ktor.client.statement.HttpResponse
-import io.ktor.http.ContentType
-import io.ktor.http.Headers
-import io.ktor.http.HttpHeaders
-import io.ktor.http.HttpStatusCode
+import io.ktor.http.*
 import io.ktor.utils.io.core.buildPacket
 import io.ktor.utils.io.core.writeFully
 import kotlinx.coroutines.CoroutineScope
@@ -143,6 +140,25 @@ class RwService(
         val response = client.get<HttpResponse> {
             url(route("/services/rwservice/getitems2?$query"))
             header(USER_TOKEN, userToken)
+        }
+        return@async response.errorAwareReceive<ItemsListResponse>()
+    }
+
+    fun searchItemsAsync(
+            pageSize: Int,
+            offset: Int,
+            where: String = ""
+    ): Deferred<ItemsListResponse> = async {
+        val response = client.get<HttpResponse> {
+            url(route("/services/rwservice/getitems2"))
+            header(USER_TOKEN, userToken)
+            """
+                {
+                    "pageSize" : $pageSize,
+                    "offset" : $offset,
+                    "where" : "$where"
+                }
+            """.trimIndent()
         }
         return@async response.errorAwareReceive<ItemsListResponse>()
     }
