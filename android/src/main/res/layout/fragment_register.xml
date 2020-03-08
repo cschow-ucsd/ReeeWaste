@@ -4,7 +4,7 @@
                                                    xmlns:tools="http://schemas.android.com/tools"
                                                    android:layout_width="match_parent"
                                                    android:layout_height="match_parent"
-                                                   tools:context=".ui.RegisterFragment">
+                                                   tools:context=".ui.login.RegisterFragment">
 
     <TextView android:layout_width="0dp" android:layout_height="wrap_content"
               android:id="@+id/textviewRegisterTitle"
@@ -95,12 +95,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/buttonRegisterRegister"
-            style="@style/Widget.AppCompat.Button.Colored"
-            android:textAllCaps="false"
-            android:textSize="@dimen/accent_button_text"
+            style="@style/AccentButton"
             app:layout_constraintTop_toBottomOf="@+id/spinnerRegisterType" app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" android:layout_marginStart="8dp" android:layout_marginEnd="8dp"
-            android:layout_marginTop="8dp" android:fontFamily="@font/berkshire_swash"/>
+            app:layout_constraintEnd_toEndOf="parent"/>
     <ProgressBar
             style="?android:attr/progressBarStyle"
             android:layout_width="wrap_content"

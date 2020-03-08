@@ -5,18 +5,28 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".MainActivity"
+        tools:context=".NavigationActivity"
         android:theme="@style/MainAppTheme">
     <TextView
-            android:text="Page Title"
+            android:text="ReeeWaste"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/textView2"
+            android:id="@+id/textviewNavTitle"
             app:layout_constraintTop_toTopOf="parent" app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" android:textAppearance="@style/PageTitle"/>
+
+    <project.ucsd.reee_waste.android.ui.NoSwipeViewPager android:layout_width="0dp" android:layout_height="0dp"
+                                                         app:layout_constraintEnd_toEndOf="parent"
+                                                         app:layout_constraintBottom_toTopOf="@+id/navNavNav"
+                                                         app:layout_constraintTop_toBottomOf="@+id/textviewNavTitle"
+                                                         app:layout_constraintStart_toStartOf="parent"
+                                                         android:id="@+id/vpNavContainer"/>
+
     <com.google.android.material.bottomnavigation.BottomNavigationView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:background="@android:color/white"
             app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            app:layout_constraintBottom_toBottomOf="parent" android:id="@+id/navNavNav"
+            app:menu="@menu/menu_navigation"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

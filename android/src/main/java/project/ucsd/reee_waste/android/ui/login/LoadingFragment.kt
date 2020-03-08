@@ -1,4 +1,4 @@
-package project.ucsd.reee_waste.android.ui
+package project.ucsd.reee_waste.android.ui.login
 
 import android.content.Intent
 import android.os.Bundle
@@ -13,7 +13,7 @@ import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import kotlinx.serialization.UnstableDefault
-import project.ucsd.reee_waste.android.MainActivity
+import project.ucsd.reee_waste.android.NavigationActivity
 import project.ucsd.reee_waste.android.R
 import project.ucsd.reee_waste.android.RwServiceViewModel
 import project.ucsd.reee_waste.android.stringPreference
@@ -55,7 +55,7 @@ class LoadingFragment : Fragment() {
         }
 
         if (isValid) {
-            val intent = Intent(activity, MainActivity::class.java)
+            val intent = Intent(activity, NavigationActivity::class.java)
             startActivity(intent)
             activity?.finish()
         } else {

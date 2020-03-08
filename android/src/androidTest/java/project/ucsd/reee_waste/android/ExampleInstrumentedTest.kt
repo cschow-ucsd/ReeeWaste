@@ -21,6 +21,5 @@ class ExampleInstrumentedTest {
         // Context of the app under test.
         val appContext = InstrumentationRegistry.getInstrumentation().targetContext
         assertEquals("project.ucsd.reee_waste.android", appContext.packageName)
-        fail()
     }
 }

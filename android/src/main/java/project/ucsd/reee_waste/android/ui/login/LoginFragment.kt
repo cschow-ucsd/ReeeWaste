@@ -1,4 +1,4 @@
-package project.ucsd.reee_waste.android.ui
+package project.ucsd.reee_waste.android.ui.login
 
 
 import android.content.Intent
@@ -15,7 +15,7 @@ import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import kotlinx.serialization.UnstableDefault
-import project.ucsd.reee_waste.android.MainActivity
+import project.ucsd.reee_waste.android.NavigationActivity
 import project.ucsd.reee_waste.android.R
 import project.ucsd.reee_waste.android.RwServiceViewModel
 import project.ucsd.reee_waste.android.stringPreference
@@ -82,7 +82,7 @@ class LoginFragment : Fragment() {
                 context, "${getString(R.string.message_welcome)} ${loginResponse.name}!",
                 Toast.LENGTH_SHORT).show()
 
-        val intent = Intent(activity, MainActivity::class.java)
+        val intent = Intent(activity, NavigationActivity::class.java)
         startActivity(intent)
         activity?.finish()
     }

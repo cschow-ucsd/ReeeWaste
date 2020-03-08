@@ -1,4 +1,4 @@
-package project.ucsd.reee_waste.android.ui
+package project.ucsd.reee_waste.android.ui.rw
 
 
 import android.os.Bundle

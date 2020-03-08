@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.commit
 import kotlinx.serialization.UnstableDefault
-import project.ucsd.reee_waste.android.ui.LoadingFragment
+import project.ucsd.reee_waste.android.ui.login.LoadingFragment
 
 @UnstableDefault
 class LoginActivity : AppCompatActivity() {

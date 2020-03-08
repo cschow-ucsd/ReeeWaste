@@ -31,5 +31,14 @@
         <item name="android:fontFamily">@font/berkshire_swash</item>
         <item name="android:textAlignment">center</item>
     </style>
+    <style name="AccentButton" parent="@style/Widget.AppCompat.Button.Colored">
+        <item name="android:textSize">@dimen/accent_button_text</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:layout_marginStart">@dimen/generic_margin</item>
+        <item name="android:layout_marginEnd">@dimen/generic_margin</item>
+        <item name="android:layout_marginTop">@dimen/generic_margin</item>
+        <item name="android:layout_marginBottom">@dimen/generic_margin</item>
+        <item name="android:fontFamily">@font/berkshire_swash</item>
+    </style>
 
 </resources>
