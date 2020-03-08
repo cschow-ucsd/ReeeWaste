@@ -13,17 +13,15 @@ import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import kotlinx.serialization.UnstableDefault
-import project.ucsd.reee_waste.android.NavigationActivity
-import project.ucsd.reee_waste.android.R
-import project.ucsd.reee_waste.android.RwServiceViewModel
-import project.ucsd.reee_waste.android.stringPreference
+import project.ucsd.reee_waste.android.*
+import project.ucsd.reee_waste.android.ui.rwErrorToast
 import project.ucsd.reee_waste.backendless.service.BackendlessHttpException
 import project.ucsd.reee_waste.backendless.service.RwService
 import java.lang.Exception
 
 @UnstableDefault
 class LoadingFragment : Fragment() {
-    private var rwUserToken by stringPreference(RwService.USER_TOKEN, null)
+    private var userToken by stringPreference(RwService.USER_TOKEN, null)
     private val rwViewModel: RwServiceViewModel by activityViewModels()
     private val rwService: RwService
         get() = rwViewModel.rwServiceInstance
@@ -44,17 +42,19 @@ class LoadingFragment : Fragment() {
     private fun validateUserTokenAsync(
     ) = scope.launch {
         val isValid = try {
-            (rwUserToken != null)
-                    && rwService.validateUserTokenAsync(rwUserToken!!).await()
+            (userToken != null)
+                    && rwService.validateUserTokenAsync(userToken!!).await()
         } catch (e: Exception) {
-            Toast.makeText(context,
-                    if (e is BackendlessHttpException) e.message
-                    else getString(R.string.generic_error),
-                    Toast.LENGTH_SHORT).show()
+            rwErrorToast(e)
             return@launch
         }
 
         if (isValid) {
+            // retrieve user and set to application
+            (activity?.application as RwApplication)
+                    .currentUser = rwService.retrieveUserAsync(userToken!!).await()
+
+            // show data if valid
             val intent = Intent(activity, NavigationActivity::class.java)
             startActivity(intent)
             activity?.finish()

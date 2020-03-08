@@ -12,6 +12,7 @@ import kotlinx.serialization.UnstableDefault
 import project.ucsd.reee_waste.android.LoginActivity
 
 import project.ucsd.reee_waste.android.R
+import project.ucsd.reee_waste.android.RwApplication
 import project.ucsd.reee_waste.android.stringPreference
 import project.ucsd.reee_waste.backendless.service.RwService
 
@@ -28,6 +29,7 @@ class SettingsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         buttonSettingsLogout.setOnClickListener {
+            (activity?.application as RwApplication).currentUser = null
             userToken = null
             val intent = Intent(activity, LoginActivity::class.java)
             startActivity(intent)

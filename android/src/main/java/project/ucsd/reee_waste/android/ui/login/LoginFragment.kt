@@ -15,10 +15,8 @@ import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import kotlinx.serialization.UnstableDefault
-import project.ucsd.reee_waste.android.NavigationActivity
-import project.ucsd.reee_waste.android.R
-import project.ucsd.reee_waste.android.RwServiceViewModel
-import project.ucsd.reee_waste.android.stringPreference
+import project.ucsd.reee_waste.android.*
+import project.ucsd.reee_waste.android.ui.rwErrorToast
 import project.ucsd.reee_waste.backendless.service.BackendlessHttpException
 import project.ucsd.reee_waste.backendless.service.RwService
 
@@ -67,10 +65,7 @@ class LoginFragment : Fragment() {
                     password = edittextLoginPassword.text.toString()
             ).await()
         } catch (e: Exception) {
-            Toast.makeText(context,
-                    if (e is BackendlessHttpException) e.message
-                    else getString(R.string.generic_error),
-                    Toast.LENGTH_SHORT).show()
+            rwErrorToast(e)
             return@launch
         } finally {
             progressLoginLoading.visibility = View.INVISIBLE
@@ -78,6 +73,7 @@ class LoginFragment : Fragment() {
         }
 
         rwUserToken = loginResponse.userToken
+        (activity?.application as RwApplication).currentUser = loginResponse
         Toast.makeText(
                 context, "${getString(R.string.message_welcome)} ${loginResponse.name}!",
                 Toast.LENGTH_SHORT).show()

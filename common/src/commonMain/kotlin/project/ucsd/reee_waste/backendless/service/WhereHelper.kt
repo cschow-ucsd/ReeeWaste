@@ -1,21 +1,20 @@
 package project.ucsd.reee_waste.backendless.service
 
-import io.ktor.http.Parameters
-import io.ktor.http.formUrlEncode
-import kotlinx.coroutines.CoroutineScope
-import kotlin.coroutines.CoroutineContext
-
-class WhereHelper(
-){
-
+object WhereHelper {
     fun search(
             title: String = "",
             description: String = "",
             type: String = "",
-            zipcode: String = "",
-            ownerId: String = ""
+            zipcode: String = ""
     ): String {
-        return "title like '%$title%' and description like '%$description%' and type like " +
-                "'%$type%' and ownerId like '%$ownerId%'"
+        return "title like '%$title%' and description like '%$description%' and type like '%$type%'"
     }
+
+    fun searchWithOwner(
+            title: String = "",
+            description: String = "",
+            type: String = "",
+            zipcode: String = "",
+            ownerId: String
+    ): String = "${search(title, description, type, zipcode)} and ownerId = '$ownerId'"
 }
