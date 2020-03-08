@@ -4,7 +4,6 @@ package project.ucsd.reee_waste.android.ui.rw
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,7 +19,7 @@ import kotlinx.coroutines.launch
 import kotlinx.serialization.UnstableDefault
 import project.ucsd.reee_waste.android.R
 import project.ucsd.reee_waste.android.RwServiceViewModel
-import project.ucsd.reee_waste.android.ui.DisplayItemActivity
+import project.ucsd.reee_waste.android.DisplayItemActivity
 import project.ucsd.reee_waste.android.ui.rwErrorToast
 import project.ucsd.reee_waste.backendless.model.Item
 import project.ucsd.reee_waste.backendless.service.RwService

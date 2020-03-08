@@ -31,6 +31,11 @@ class RwService(
     companion object {
         const val BASE_URL = "https://api.backendless.com"
         const val USER_TOKEN = "user-token"
+
+        val EWASTE_TYPES = arrayOf("Computers", "Smartphones", "Large Household Appliances",
+                "Small Household Appliances", "Lighting", "Toys, leisure, and sports equipment",
+                "Medical equipment systems", "Monitoring and control instruments",
+                "Automatic dispensers", "Information Technology")
     }
 
     private val job: Job = SupervisorJob()
@@ -241,7 +246,7 @@ class RwService(
                     }
                     )
                     */
-           // body = ContentType.URIFileContent(path)
+            // body = ContentType.URIFileContent(path)
         }
         return@async response.errorAwareReceive<HttpResponse>()
     }

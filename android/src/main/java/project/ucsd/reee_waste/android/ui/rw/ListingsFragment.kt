@@ -1,6 +1,7 @@
 package project.ucsd.reee_waste.android.ui.rw
 
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -13,11 +14,8 @@ import kotlinx.android.synthetic.main.fragment_listings.*
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import kotlinx.serialization.UnstableDefault
+import project.ucsd.reee_waste.android.*
 
-import project.ucsd.reee_waste.android.R
-import project.ucsd.reee_waste.android.RwApplication
-import project.ucsd.reee_waste.android.RwServiceViewModel
-import project.ucsd.reee_waste.android.ui.DisplayItemActivity
 import project.ucsd.reee_waste.android.ui.rwErrorToast
 import project.ucsd.reee_waste.backendless.model.Item
 import project.ucsd.reee_waste.backendless.service.RwService
@@ -58,6 +56,11 @@ class ListingsFragment : Fragment() {
             fetchItemsAsync()
         }
 
+        fabListingsPost.setOnClickListener {
+            val intent = Intent(activity, PostItemActivity::class.java)
+            startActivityForResult(intent, PostItemActivity.REQUEST_CODE)
+        }
+
         fetchItemsAsync()
     }
 
@@ -83,5 +86,12 @@ class ListingsFragment : Fragment() {
         items.clear()
         items.addAll(itemsResponse.results)
         adapter.notifyDataSetChanged()
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (requestCode == PostItemActivity.REQUEST_CODE
+                && resultCode == Activity.RESULT_OK) {
+            fetchItemsAsync()
+        }
     }
 }

@@ -1,4 +1,4 @@
-package project.ucsd.reee_waste.android.ui
+package project.ucsd.reee_waste.android
 
 import android.app.Activity
 import android.content.Context
@@ -12,10 +12,7 @@ import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import kotlinx.serialization.UnstableDefault
-import project.ucsd.reee_waste.android.BuildConfig
-import project.ucsd.reee_waste.android.R
-import project.ucsd.reee_waste.android.RwApplication
-import project.ucsd.reee_waste.android.RwServiceViewModel
+import project.ucsd.reee_waste.android.ui.rwErrorToast
 import project.ucsd.reee_waste.backendless.service.RwService
 
 @UnstableDefault

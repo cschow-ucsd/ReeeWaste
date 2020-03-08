@@ -15,12 +15,13 @@
             app:layout_constraintTop_toTopOf="parent" app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" android:textAppearance="@style/PageTitle"/>
 
-    <project.ucsd.reee_waste.android.ui.NoSwipeViewPager android:layout_width="0dp" android:layout_height="0dp"
-                                                         app:layout_constraintEnd_toEndOf="parent"
-                                                         app:layout_constraintBottom_toTopOf="@+id/navNavNav"
-                                                         app:layout_constraintTop_toBottomOf="@+id/textviewNavTitle"
-                                                         app:layout_constraintStart_toStartOf="parent"
-                                                         android:id="@+id/vpNavContainer"/>
+    <project.ucsd.reee_waste.android.ui.NoSwipeViewPager
+            android:layout_width="0dp" android:layout_height="0dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/navNavNav"
+            app:layout_constraintTop_toBottomOf="@+id/textviewNavTitle"
+            app:layout_constraintStart_toStartOf="parent"
+            android:id="@+id/vpNavContainer"/>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
             android:layout_width="0dp"

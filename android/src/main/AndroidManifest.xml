@@ -12,7 +12,9 @@
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
-        <activity android:name=".ui.DisplayItemActivity">
+        <activity android:name=".PostItemActivity">
+        </activity>
+        <activity android:name=".DisplayItemActivity">
         </activity>
         <activity android:name=".NavigationActivity">
         </activity>

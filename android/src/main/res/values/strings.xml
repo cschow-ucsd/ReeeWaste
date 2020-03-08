@@ -16,4 +16,7 @@
     <string name="currency">$</string>
     <string name="for_sale">For Sale</string>
     <string name="sold">Sold</string>
+    <string name="post">Post</string>
+    <string name="invalid_input">Invalid input. Please try again.</string>
+    <string name="post_success">Item posted successfully!</string>
 </resources>

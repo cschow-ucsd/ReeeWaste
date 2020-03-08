@@ -30,6 +30,7 @@ class NavigationActivity : AppCompatActivity() {
                         .getString(RwService.USER_TOKEN, null)
 
         navNavNav.setOnNavigationItemSelectedListener(this::handleMenuItemSelected)
+        vpNavContainer.offscreenPageLimit = 2
         vpNavContainer.adapter = NoSwipePagerAdapter(
                 fm = supportFragmentManager,
                 fragments = arrayOf(DashboardFragment(), ListingsFragment(), SettingsFragment())
