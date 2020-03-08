@@ -14,12 +14,7 @@ class WhereHelper(
             type: String = "",
             zipcode: String = ""
     ): String {
-        return Parameters.build {
-            append("title", title)
-            append("description", description)
-            append("type", type)
-            append("zipcode", zipcode)
-            append("selling", "true")
-        }.formUrlEncode()
+        return "title like '%$title%' and description like '%$description%' and type like " +
+                "'%$type%'"
     }
 }

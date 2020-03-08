@@ -150,4 +150,12 @@ class RwServiceTest {
         assertNotNull(buyResponse)
     }
 
+    @Test
+    fun searchTest(): Unit = runBlocking {
+        val where = WhereHelper().search("Dispenser")
+
+        val response = service.searchItemsAsync(10, 0, where).await()
+        assertNotNull(response)
+    }
+
 }
