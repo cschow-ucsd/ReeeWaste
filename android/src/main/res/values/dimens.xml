@@ -1,6 +1,7 @@
 <resources>
     <dimen name="input_label_vertical_spacing">8dp</dimen>
     <dimen name="input_label_horizontal_spacing">4dp</dimen>
+    <dimen name="generic_margin">8dp</dimen>
     <dimen name="page_title">40sp</dimen>
     <dimen name="accent_button_text">20sp</dimen>
     <dimen name="title_top_margin">16dp</dimen>

@@ -149,5 +149,4 @@ class RwServiceTest {
         val buyResponse = service.buyItemAsync(postResponse.objectId, response.objectId).await()
         assertNotNull(buyResponse)
     }
-
 }

@@ -12,10 +12,7 @@
               app:layout_constraintStart_toStartOf="parent"
               app:layout_constraintEnd_toEndOf="parent"
               app:layout_constraintBottom_toTopOf="@id/textInputLayout4" android:text="Register"
-              android:textAppearance="@style/TextAppearance.AppCompat.Large" android:layout_marginStart="8dp"
-              android:layout_marginEnd="8dp" android:layout_marginTop="@dimen/title_top_margin" android:layout_marginBottom="8dp"
-              android:textSize="@dimen/page_title" android:textColor="@color/colorPrimary"
-              android:fontFamily="@font/berkshire_swash" android:textAlignment="center"/>
+              style="@style/PageTitle"/>
 
     <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"

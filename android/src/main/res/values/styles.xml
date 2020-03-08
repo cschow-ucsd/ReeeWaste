@@ -21,4 +21,15 @@
         <item name="android:paddingRight">@dimen/input_label_horizontal_spacing</item>
     </style>
 
+    <style name="PageTitle" parent="TextAppearance.AppCompat.Large">
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:textSize">@dimen/page_title</item>
+        <item name="android:layout_marginTop">@dimen/title_top_margin</item>
+        <item name="android:layout_marginBottom">@dimen/generic_margin</item>
+        <item name="android:layout_marginStart">@dimen/generic_margin</item>
+        <item name="android:layout_marginEnd">@dimen/generic_margin</item>
+        <item name="android:fontFamily">@font/berkshire_swash</item>
+        <item name="android:textAlignment">center</item>
+    </style>
+
 </resources>

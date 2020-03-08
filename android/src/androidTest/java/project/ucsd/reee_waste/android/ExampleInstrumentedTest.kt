@@ -3,6 +3,7 @@ package project.ucsd.reee_waste.android
 import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner
 import androidx.test.platform.app.InstrumentationRegistry
 import junit.framework.TestCase.assertEquals
+import junit.framework.TestCase.fail
 
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -20,5 +21,6 @@ class ExampleInstrumentedTest {
         // Context of the app under test.
         val appContext = InstrumentationRegistry.getInstrumentation().targetContext
         assertEquals("project.ucsd.reee_waste.android", appContext.packageName)
+        fail()
     }
 }
