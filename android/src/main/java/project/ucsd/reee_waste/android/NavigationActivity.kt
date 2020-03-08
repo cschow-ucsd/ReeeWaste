@@ -9,6 +9,7 @@ import kotlinx.android.synthetic.main.activity_navigation.*
 import kotlinx.serialization.UnstableDefault
 import project.ucsd.reee_waste.android.ui.NoSwipePagerAdapter
 import project.ucsd.reee_waste.android.ui.rw.DashboardFragment
+import project.ucsd.reee_waste.android.ui.rw.ListingsFragment
 import project.ucsd.reee_waste.android.ui.rw.SettingsFragment
 import project.ucsd.reee_waste.backendless.service.RwService
 
@@ -31,7 +32,7 @@ class NavigationActivity : AppCompatActivity() {
         navNavNav.setOnNavigationItemSelectedListener(this::handleMenuItemSelected)
         vpNavContainer.adapter = NoSwipePagerAdapter(
                 fm = supportFragmentManager,
-                fragments = arrayOf(DashboardFragment(), DashboardFragment(), SettingsFragment())
+                fragments = arrayOf(DashboardFragment(), ListingsFragment(), SettingsFragment())
         )
     }
 

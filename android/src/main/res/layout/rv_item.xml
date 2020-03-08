@@ -35,7 +35,8 @@
             app:layout_constraintTop_toBottomOf="@+id/textviewItemName"
             app:layout_constraintBottom_toTopOf="@+id/textviewItemType"
             app:layout_constraintStart_toEndOf="@+id/imageviewItemImage"
-            app:layout_constraintEnd_toEndOf="parent" android:layout_marginStart="8dp" android:layout_marginEnd="8dp"/>
+            android:layout_marginStart="8dp" app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintEnd_toStartOf="@+id/textviewItemForSale" android:layout_marginEnd="8dp"/>
     <TextView
             android:text="TextView"
             android:layout_width="0dp"
@@ -46,4 +47,19 @@
             app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintTop_toBottomOf="@+id/textviewItemPrice"
             android:layout_marginBottom="8dp" app:layout_constraintStart_toStartOf="@+id/textviewItemPrice"
             app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"/>
+    <TextView
+            android:text="@string/for_sale"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textviewItemForSale"
+            android:background="@color/colorAccent"
+            android:textColor="@android:color/white"
+            android:padding="4dp"
+            android:fontFamily="@font/berkshire_swash"
+            android:visibility="gone"
+            tools:visibility="visible"
+            app:layout_constraintTop_toBottomOf="@+id/textviewItemName"
+            app:layout_constraintBottom_toTopOf="@+id/textviewItemType" app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/textviewItemPrice" app:layout_constraintHorizontal_bias="0.5"
+            android:layout_marginStart="8dp" android:layout_marginEnd="8dp"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

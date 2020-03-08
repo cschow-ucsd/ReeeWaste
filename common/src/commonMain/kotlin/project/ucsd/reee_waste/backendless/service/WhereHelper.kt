@@ -5,9 +5,11 @@ object WhereHelper {
             title: String = "",
             description: String = "",
             type: String = "",
-            zipcode: String = ""
+            zipcode: String = "",
+            forSaleOnly: Boolean = true
     ): String {
-        return "(title like '%$title%' or description like '%$description%') and type like '%$type%'"
+        return "(title like '%$title%' or description like '%$description%') and type like '%$type%'" +
+                if (forSaleOnly) " and selling = true" else ""
     }
 
     fun searchWithOwner(
@@ -15,6 +17,7 @@ object WhereHelper {
             description: String = "",
             type: String = "",
             zipcode: String = "",
+            forSaleOnly: Boolean = false,
             ownerId: String
-    ): String = "${search(title, description, type, zipcode)} and ownerId = '$ownerId'"
+    ): String = "${search(title, description, type, zipcode, forSaleOnly)} and ownerId = '$ownerId'"
 }

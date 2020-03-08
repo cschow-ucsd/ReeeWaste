@@ -1,24 +1,21 @@
 package project.ucsd.reee_waste.android.ui.rw
 
 
-import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.SearchView
-import android.widget.Toast
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import kotlinx.android.synthetic.main.fragment_dashboard.*
+import kotlinx.android.synthetic.main.fragment_listings.*
 import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import kotlinx.serialization.UnstableDefault
+
 import project.ucsd.reee_waste.android.R
+import project.ucsd.reee_waste.android.RwApplication
 import project.ucsd.reee_waste.android.RwServiceViewModel
 import project.ucsd.reee_waste.android.ui.DisplayItemActivity
 import project.ucsd.reee_waste.android.ui.rwErrorToast
@@ -27,44 +24,37 @@ import project.ucsd.reee_waste.backendless.service.RwService
 import project.ucsd.reee_waste.backendless.service.WhereHelper
 
 @UnstableDefault
-class DashboardFragment : Fragment(), SearchView.OnQueryTextListener {
+class ListingsFragment : Fragment() {
     private val rwServiceViewModel: RwServiceViewModel by activityViewModels()
     private val rwService: RwService
         get() = rwServiceViewModel.rwServiceInstance
 
     private val scope = MainScope()
 
-    private var searchText: String = ""
-
     private val items: MutableList<Item> = mutableListOf()
     private lateinit var adapter: ItemsAdapter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_dashboard, container, false)
+        return inflater.inflate(R.layout.fragment_listings, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        adapter = ItemsAdapter(items, false, View.OnClickListener { v ->
-            val position = rvDashItems.getChildLayoutPosition(v)
+        adapter = ItemsAdapter(items, true, View.OnClickListener { v ->
+            val position = rvListingsItems.getChildLayoutPosition(v)
             val intent = Intent(activity, DisplayItemActivity::class.java)
             intent.putExtra(DisplayItemActivity.OBJECT_ID, items[position].objectId)
-            intent.putExtra(DisplayItemActivity.CAN_PURCHASE, true)
+            intent.putExtra(DisplayItemActivity.CAN_PURCHASE, false)
             startActivityForResult(intent, DisplayItemActivity.REQUEST_CODE)
         })
-        rvDashItems.adapter = adapter
-        rvDashItems.layoutManager = LinearLayoutManager(context)
 
-        svDashSearch.setOnQueryTextListener(this)
+        rvListingsItems.adapter = adapter
+        rvListingsItems.layoutManager = LinearLayoutManager(context)
 
-        buttonDashFilter.setOnClickListener {
-            Toast.makeText(context, "Filter coming soon!", Toast.LENGTH_SHORT).show()
-        }
-
-        swipeDashRvContainer.setColorSchemeColors(context!!.getColor(R.color.colorAccent))
-        swipeDashRvContainer.setOnRefreshListener {
+        swipeListingsRvContainer.setColorSchemeColors(context!!.getColor(R.color.colorAccent))
+        swipeListingsRvContainer.setOnRefreshListener {
             fetchItemsAsync()
         }
 
@@ -73,49 +63,25 @@ class DashboardFragment : Fragment(), SearchView.OnQueryTextListener {
 
     private fun fetchItemsAsync(
     ) = scope.launch {
-        swipeDashRvContainer.isRefreshing = true
-
+        val user = (activity?.application as RwApplication).currentUser!!
         val itemsResponse = try {
             rwService.searchItemsAsync(
                     pageSize = 100,
                     offset = 0,
-                    where = WhereHelper.search(
-                            title = searchText,
-                            description = searchText
+                    where = WhereHelper.searchWithOwner(
+                            forSaleOnly = false,
+                            ownerId = user.objectId
                     )
             ).await()
         } catch (e: Exception) {
             rwErrorToast(e)
             return@launch
         } finally {
-            swipeDashRvContainer.isRefreshing = false
+            swipeListingsRvContainer.isRefreshing = false
         }
 
         items.clear()
         items.addAll(itemsResponse.results)
         adapter.notifyDataSetChanged()
-    }
-
-    override fun onQueryTextSubmit(query: String?): Boolean {
-        searchText = query ?: ""
-        fetchItemsAsync()
-        return true
-    }
-
-    override fun onQueryTextChange(newText: String?): Boolean {
-        searchText = newText ?: ""
-        return true
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (requestCode == DisplayItemActivity.REQUEST_CODE
-                && resultCode == Activity.RESULT_OK) {
-            fetchItemsAsync()
-        }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        scope.cancel()
     }
 }

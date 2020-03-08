@@ -14,4 +14,6 @@
     <string name="nav_listings">Listings</string>
     <string name="search_hint">Search for E-waste</string>
     <string name="currency">$</string>
+    <string name="for_sale">For Sale</string>
+    <string name="sold">Sold</string>
 </resources>
