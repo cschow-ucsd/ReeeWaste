@@ -137,7 +137,7 @@ class RwService(
             where: String = ""
     ): Deferred<ItemsListResponse> = async {
         val query = "pageSize=$pageSize&offset=$offset&where=$where"
-        val response = client.get<HttpResponse> {
+        val response = client.post<HttpResponse> {
             url(route("/services/rwservice/getitems2?$query"))
             header(USER_TOKEN, userToken)
         }
@@ -149,10 +149,10 @@ class RwService(
             offset: Int,
             where: String = ""
     ): Deferred<ItemsListResponse> = async {
-        val response = client.get<HttpResponse> {
+        val response = client.post<HttpResponse> {
             url(route("/services/rwservice/getitems2"))
             header(USER_TOKEN, userToken)
-            """
+            body = """
                 {
                     "pageSize" : $pageSize,
                     "offset" : $offset,

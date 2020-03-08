@@ -82,7 +82,7 @@ class RwServiceTest {
 
     @Test
     fun getDatabaseTest(): Unit = runBlocking {
-        val deferred = service.getItemsAsync(10, 0)
+        val deferred = service.searchItemsAsync(10, 0)
         val response = deferred.await()
         println(response)
         assertNotNull(response)
@@ -152,7 +152,7 @@ class RwServiceTest {
 
     @Test
     fun searchTest(): Unit = runBlocking {
-        val where = WhereHelper.search("Dispenser")
+        val where = WhereHelper.search("Dispenser", "Dispenser")
 
         val response = service.searchItemsAsync(10, 0, where).await()
         response.results.forEach {

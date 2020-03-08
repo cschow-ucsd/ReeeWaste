@@ -7,7 +7,7 @@ object WhereHelper {
             type: String = "",
             zipcode: String = ""
     ): String {
-        return "title like '%$title%' and description like '%$description%' and type like '%$type%'"
+        return "(title like '%$title%' or description like '%$description%') and type like '%$type%'"
     }
 
     fun searchWithOwner(

@@ -67,9 +67,7 @@ class DashboardFragment : Fragment(), SearchView.OnQueryTextListener {
                     offset = 0,
                     where = WhereHelper.search(
                             title = searchText,
-                            description = searchText,
-                            type = "Computers",
-                            zipcode = ""
+                            description = searchText
                     )
             ).await()
         } catch (e: Exception) {
@@ -97,6 +95,7 @@ class DashboardFragment : Fragment(), SearchView.OnQueryTextListener {
     }
 
     override fun onQueryTextChange(newText: String?): Boolean {
+        searchText = newText ?: ""
         return true
     }
 }
