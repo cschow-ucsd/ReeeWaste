@@ -60,11 +60,15 @@ class RegisterFragment : Fragment() {
                     zipCode = edittextRegisterZipcode.text.toString().toIntOrNull() ?: 0,
                     isCenter = spinnerRegisterType.selectedItem == getString(R.string.acc_ewaste_center)
             ).await()
-        } catch (e: BackendlessHttpException) {
+        } catch (e: Exception) {
+            Toast.makeText(context,
+                    if (e is BackendlessHttpException) e.message
+                    else getString(R.string.generic_error),
+                    Toast.LENGTH_SHORT).show()
+            return@launch
+        } finally {
             progressRegisterLoading.visibility = View.INVISIBLE
             buttonRegisterRegister.visibility = View.VISIBLE
-            Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
-            return@launch
         }
 
         Toast.makeText(context, "User created successfully!", Toast.LENGTH_SHORT).show()

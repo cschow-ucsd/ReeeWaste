@@ -1,8 +1,8 @@
 package project.ucsd.reee_waste.android.ui
 
 
+import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -15,6 +15,7 @@ import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import kotlinx.serialization.UnstableDefault
+import project.ucsd.reee_waste.android.MainActivity
 import project.ucsd.reee_waste.android.R
 import project.ucsd.reee_waste.android.RwServiceViewModel
 import project.ucsd.reee_waste.android.stringPreference
@@ -65,11 +66,15 @@ class LoginFragment : Fragment() {
                     login = edittextLoginId.text.toString(),
                     password = edittextLoginPassword.text.toString()
             ).await()
-        } catch (e: BackendlessHttpException) {
+        } catch (e: Exception) {
+            Toast.makeText(context,
+                    if (e is BackendlessHttpException) e.message
+                    else getString(R.string.generic_error),
+                    Toast.LENGTH_SHORT).show()
+            return@launch
+        } finally {
             progressLoginLoading.visibility = View.INVISIBLE
             buttonLoginLogin.visibility = View.VISIBLE
-            Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
-            return@launch
         }
 
         rwUserToken = loginResponse.userToken
@@ -77,9 +82,9 @@ class LoginFragment : Fragment() {
                 context, "${getString(R.string.message_welcome)} ${loginResponse.name}!",
                 Toast.LENGTH_SHORT).show()
 
-        parentFragmentManager.commit {
-            replace(R.id.mainContainer, DashboardFragment())
-        }
+        val intent = Intent(activity, MainActivity::class.java)
+        startActivity(intent)
+        activity?.finish()
     }
 
     override fun onDestroy() {

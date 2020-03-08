@@ -8,4 +8,5 @@
     <string name="acc_ewaste_center">E-waste Center</string>
     <string name="register">Register</string>
     <string name="login">Login</string>
+    <string name="generic_error">Something went wrong...</string>
 </resources>

@@ -1,9 +1,11 @@
 package project.ucsd.reee_waste.android.ui
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.commit
@@ -11,10 +13,13 @@ import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import kotlinx.serialization.UnstableDefault
+import project.ucsd.reee_waste.android.MainActivity
 import project.ucsd.reee_waste.android.R
 import project.ucsd.reee_waste.android.RwServiceViewModel
 import project.ucsd.reee_waste.android.stringPreference
+import project.ucsd.reee_waste.backendless.service.BackendlessHttpException
 import project.ucsd.reee_waste.backendless.service.RwService
+import java.lang.Exception
 
 @UnstableDefault
 class LoadingFragment : Fragment() {
@@ -38,14 +43,25 @@ class LoadingFragment : Fragment() {
 
     private fun validateUserTokenAsync(
     ) = scope.launch {
-        val isValid = (rwUserToken != null)
-                && rwService.validateUserTokenAsync(rwUserToken!!).await()
+        val isValid = try {
+            (rwUserToken != null)
+                    && rwService.validateUserTokenAsync(rwUserToken!!).await()
+        } catch (e: Exception) {
+            Toast.makeText(context,
+                    if (e is BackendlessHttpException) e.message
+                    else getString(R.string.generic_error),
+                    Toast.LENGTH_SHORT).show()
+            return@launch
+        }
 
-        parentFragmentManager.commit {
-            replace(R.id.mainContainer,
-                    if (isValid) DashboardFragment()
-                    else LoginFragment()
-            )
+        if (isValid) {
+            val intent = Intent(activity, MainActivity::class.java)
+            startActivity(intent)
+            activity?.finish()
+        } else {
+            parentFragmentManager.commit {
+                replace(R.id.mainContainer, LoginFragment())
+            }
         }
     }
 
