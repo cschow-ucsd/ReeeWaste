@@ -41,7 +41,6 @@ class DisplayItemActivity : AppCompatActivity() {
 
 
         val canPurchase = intent.getBooleanExtra(CAN_PURCHASE, false)
-        val user = (application as RwApplication).currentUser!!
         if (canPurchase) {
             buttonDisplayAddCart.visibility = View.VISIBLE
             buttonDisplayPurchase.visibility = View.VISIBLE
